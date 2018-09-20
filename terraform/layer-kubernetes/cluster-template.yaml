@@ -3,6 +3,10 @@ kind: Cluster
 metadata:
   name: {{ name }}
 spec:
+  kubernetesVersion: 1.10.5
+  sshKeyName: slavayssiere-sandbox-wescale
+  kubeDNS:
+    provider: CoreDNS
   api:
     loadBalancer:
       type: Internal
@@ -11,7 +15,7 @@ spec:
   channel: stable
   cloudProvider: aws
   configBase: s3://wescale-slavayssiere-kops/{{ name }}
-  dnsZone: {{ dns.zone_id }}
+  dnsZone: Z3JLCKJUVY9MHR
   etcdClusters:
   - etcdMembers:
     - instanceGroup: master-eu-west-1a
@@ -21,6 +25,7 @@ spec:
     - instanceGroup: master-eu-west-1c
       name: c
     name: main
+    enableEtcdTLS: true
     version: 3.1.0
   - etcdMembers:
     - instanceGroup: master-eu-west-1a
@@ -30,11 +35,11 @@ spec:
     - instanceGroup: master-eu-west-1c
       name: c
     name: events
+    enableEtcdTLS: true
     version: 3.1.0
   iam:
     allowContainerRegistry: true
     legacy: false
-  kubernetesVersion: 1.10.3
   masterPublicName: api.{{ name }}
   networking:
     cilium: {}
@@ -84,6 +89,8 @@ spec:
       type: Private
     masters: private
     nodes: private
+    bastion:
+      bastionPublicName: bastion.{{ name }}.aws-wescale.slavayssiere.fr
 
 ---
 
@@ -162,3 +169,20 @@ spec:
   - eu-west-1a
   - eu-west-1b
   - eu-west-1c
+
+---
+
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  name: bastions
+spec:
+  associatePublicIp: true
+  machineType: t2.micro
+  maxSize: 1
+  minSize: 1
+  role: Bastion
+  subnets:
+  - utility-eu-west-1a
+  - utility-eu-west-1b
+  - utility-eu-west-1c

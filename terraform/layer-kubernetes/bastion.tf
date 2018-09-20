@@ -31,6 +31,91 @@ resource "aws_security_group" "allow_ssh" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+data "aws_iam_policy_document" "bastion-assume-role-policy" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "bastion_role" {
+  name               = "bastion_role"
+  path               = "/system/"
+  assume_role_policy = "${data.aws_iam_policy_document.bastion-assume-role-policy.json}"
+}
+
+
+// data "aws_iam_policy_document" "bastion-role-policy" {
+//   statement {
+//     sid = "1"
+
+//     actions = [
+//       "s3:*",
+//     ]
+
+//     resources = [
+//       "arn:aws:s3:::*",
+//     ]
+//   }
+// }
+
+// resource "aws_iam_role_policy" "bastion_policy" {
+//   name = "bastion_policy"
+//   role = "${aws_iam_role.bastion_role.id}"
+
+//   policy = "${data.aws_iam_policy_document.bastion-role-policy.json}"
+// }
+
+resource "aws_iam_role_policy_attachment" "EC2-attach" {
+    role       = "${aws_iam_role.bastion_role.name}"
+    policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+}
+resource "aws_iam_role_policy_attachment" "Route53-attach" {
+    role       = "${aws_iam_role.bastion_role.name}"
+    policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
+}
+resource "aws_iam_role_policy_attachment" "S3-attach" {
+    role       = "${aws_iam_role.bastion_role.name}"
+    policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+resource "aws_iam_role_policy_attachment" "IAM-attach" {
+    role       = "${aws_iam_role.bastion_role.name}"
+    policy_arn = "arn:aws:iam::aws:policy/IAMFullAccess"
+}
+resource "aws_iam_role_policy_attachment" "VPC-attach" {
+    role       = "${aws_iam_role.bastion_role.name}"
+    policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
+}
+
+
+resource "aws_iam_instance_profile" "bastion_profile" {
+  name = "bastion_profile"
+  role = "${aws_iam_role.bastion_role.name}"
+}
+
+resource "aws_key_pair" "slavayssiere-sandbox-wescale" {
+  key_name   = "slavayssiere-sandbox-wescale"
+  public_key = "${file("~/.ssh/id_rsa.pub")}"
 }
 
 resource "aws_instance" "bastion" {
@@ -40,4 +125,14 @@ resource "aws_instance" "bastion" {
   subnet_id                   = "${data.terraform_remote_state.layer-base.sn_public_a_id}"
   associate_public_ip_address = true
   user_data                   = "${file("install-bastion.sh")}"
+  iam_instance_profile        = "${aws_iam_instance_profile.bastion_profile.name}"
+  key_name = "slavayssiere-sandbox-wescale"
+
+  tags {
+    Name = "Bastion"
+  }
+}
+
+output "bastion_public_dns" {
+  value = "${aws_instance.bastion.public_dns}"
 }
