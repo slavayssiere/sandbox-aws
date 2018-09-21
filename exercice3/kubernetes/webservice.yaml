@@ -64,7 +64,7 @@ metadata:
 spec:
   namespaceSelector:
     matchNames:
-    - default
+    - exercice3
   selector:
     matchLabels:
       app: webservice

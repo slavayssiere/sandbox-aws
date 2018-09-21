@@ -23,18 +23,53 @@ spec:
   resources:
     requests:
       memory: 400Mi
+  externalUrl: /prometheus-exercice3
+  routePrefix: /
 ---
-apiVersion: v1
-kind: Service
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: prometheus-ui-ing
+  namespace: exercice3
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /prometheus-exercice3
+        backend:
+          serviceName: prometheus-operated
+          servicePort: 9090
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: Role
 metadata:
   name: prometheus
   namespace: exercice3
-spec:
-  ports:
-  - name: web
-    nodePort: 30900
-    port: 9090
-    protocol: TCP
-    targetPort: web
-  selector:
-    prometheus: prometheus
+rules:
+- apiGroups: [""]
+  resources:
+  - pods
+  - services
+  - endpoints
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources:
+  - configmaps
+  verbs: ["get"]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: prometheus
+  namespace: exercice3
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: prometheus
+subjects:
+- kind: ServiceAccount
+  name: prometheus
+  namespace: exercice3
