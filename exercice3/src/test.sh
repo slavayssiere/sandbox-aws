@@ -1,5 +1,5 @@
 
-docker build -t 549637939820.dkr.ecr.eu-west-1.amazonaws.com/webservice-test:0.0.1 .
+docker build -t 549637939820.dkr.ecr.eu-west-1.amazonaws.com/webservice-test:0.0.2 .
 
 docker run -it --name test-api -e PREFIX_PATH=/ -p8080:8080 eu.gcr.io/slavayssiere-sandbox/api-test:latest
 

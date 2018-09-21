@@ -32,14 +32,13 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # allow https for kops/kubectl install
+  # allow https for kops/kubectl/helm install
   egress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
 
   # allow https for kops/kubectl install
   egress {
