@@ -4,7 +4,6 @@ metadata:
   name: {{ name }}
 spec:
   kubernetesVersion: 1.10.5
-  sshKeyName: slavayssiere-sandbox-wescale
   additionalPolicies:
     node: |
       [

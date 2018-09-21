@@ -6,6 +6,7 @@ cd ../layer-servicemesh
 
 scp -r -oStrictHostKeyChecking=no ./manifests ec2-user@$bastion_hostname:~
 scp -r -oStrictHostKeyChecking=no ./traefik ec2-user@$bastion_hostname:~
+scp -r -oStrictHostKeyChecking=no ./monitoring ec2-user@$bastion_hostname:~
 
 ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname 
 
@@ -17,6 +18,10 @@ kubectl apply -f v0.19.0.yaml
 cd ..
 
 cd traefik
+kubectl create -f .
+cd ..
+
+cd monitoring
 kubectl create -f .
 cd ..
 
