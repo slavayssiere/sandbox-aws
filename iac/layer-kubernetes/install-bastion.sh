@@ -13,6 +13,10 @@ tar -xf helm.tar.gz
 chmod +x linux-amd64/helm
 sudo mv linux-amd64/helm /usr/local/bin/helm
 
+wget https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+chmod +x jq-linux64
+sudo mv jq-linux64 /usr/local/bin/jq
+
 
 echo "export KOPS_STATE_STORE=s3://wescale-slavayssiere-kops" >> /home/ec2-user/.bashrc
 echo "kops export kubecfg test.slavayssiere.wescale >> /dev/null 2>&1" >> /home/ec2-user/.bashrc

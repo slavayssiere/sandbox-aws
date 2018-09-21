@@ -2,6 +2,10 @@ provider "aws" {
   region = "eu-west-1"
 }
 
+variable "cluster_name" {
+  default = "test.slavayssiere.wescale"
+}
+
 terraform {
   backend "s3" {
     bucket = "wescale-slavayssiere-terraform"
@@ -50,12 +54,12 @@ resource "aws_security_group" "allow_ssh" {
 }
 
 data "aws_security_group" "sg-master-kubernetes" {
-  name   = "masters.test.slavayssiere.wescale"
+  name   = "masters.${var.cluster_name}"
   vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
 }
 
 data "aws_security_group" "sg-nodes-kubernetes" {
-  name   = "nodes.test.slavayssiere.wescale"
+  name   = "nodes.${var.cluster_name}"
   vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
 }
 
