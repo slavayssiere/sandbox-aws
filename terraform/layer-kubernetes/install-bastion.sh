@@ -8,5 +8,7 @@ wget -O kubectl https://storage.googleapis.com/kubernetes-release/release/$(curl
 chmod +x ./kubectl
 sudo mv ./kubectl /usr/local/bin/kubectl
 
-export KOPS_STATE_STORE=s3://wescale-slavayssiere-kops
-kops export kubecfg test.slavayssiere.wescale
+
+echo "export KOPS_STATE_STORE=s3://wescale-slavayssiere-kops" >> /home/ec2-user/.bashrc
+echo "kops export kubecfg test.slavayssiere.wescale" >> /home/ec2-user/.bashrc
+

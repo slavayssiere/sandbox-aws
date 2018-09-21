@@ -34,22 +34,6 @@ resource "local_file" "foo" {
   filename = "${path.module}/../data.yaml"
 }
 
-// output "private_dns_zone_id" {
-//     value = "${aws_route53_zone.demo_private_zone.zone_id}"
-// }
-
-// output "sn_private_a_id" {
-//     value = "${aws_subnet.demo_sn_private_a.id}"
-// }
-
-// output "sn_private_b_id" {
-//     value = "${aws_subnet.demo_sn_private_b.id}"
-// }
-
-// output "sn_private_c_id" {
-//     value = "${aws_subnet.demo_sn_private_c.id}"
-// }
-
 output "sn_public_a_id" {
   value = "${aws_subnet.demo_sn_public_a.id}"
 }
@@ -66,34 +50,6 @@ output "vpc_id" {
   value = "${aws_vpc.demo_vpc.id}"
 }
 
-/*
-name: test.slavayssiere.wescale
-dns:
-    zone_id: ${zone_id}
-network:
-    cidr: ${vpc_cidr}
-    vpc_id: ${vpc_id}
-network:
-    private_a:
-        cidr: ${priv_a_cidr}
-        id: ${priv_a_id}
-        nat_id: ${priv_a_nat}
-    private_b:
-        cidr: ${priv_b_cidr}
-        id: ${priv_b_id}
-        nat_id: ${priv_b_nat}
-    private_c:
-        cidr: ${priv_c_cidr}
-        id: ${priv_c_id}
-        nat_id: ${priv_c_nat}
-    public_a:
-        cidr: ${pub_a_cidr}
-        id: ${pub_a_id}
-    public_b:
-        cidr: ${pub_b_cidr}
-        id: ${pub_b_id}
-    public_c:
-        cidr: ${pub_c_cidr}
-        id: ${pub_c_id}
-*/
-
+output "vpc_cidr" {
+  value = "${var.vpc_cidr}"
+}

@@ -32,19 +32,52 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  egress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
+  # allow https for kops/kubectl install
   egress {
     from_port   = 443
     to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+
+  # allow https for kops/kubectl install
+  egress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+data "aws_security_group" "sg-master-kubernetes" {
+  name   = "masters.test.slavayssiere.wescale"
+  vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
+}
+
+data "aws_security_group" "sg-nodes-kubernetes" {
+  name   = "nodes.test.slavayssiere.wescale"
+  vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
+}
+
+resource "aws_security_group_rule" "allow_ssh_bastion_master" {
+  type                     = "ingress"
+  from_port                = 22
+  to_port                  = 22
+  protocol                 = "tcp"
+  source_security_group_id = "${aws_security_group.allow_ssh.id}"
+
+  security_group_id = "${data.aws_security_group.sg-master-kubernetes.id}"
+}
+
+resource "aws_security_group_rule" "allow_ssh_bastion_nodes" {
+  type                     = "ingress"
+  from_port                = 22
+  to_port                  = 22
+  protocol                 = "tcp"
+  source_security_group_id = "${aws_security_group.allow_ssh.id}"
+
+  security_group_id = "${data.aws_security_group.sg-nodes-kubernetes.id}"
 }
 
 data "aws_iam_policy_document" "bastion-assume-role-policy" {
@@ -64,49 +97,30 @@ resource "aws_iam_role" "bastion_role" {
   assume_role_policy = "${data.aws_iam_policy_document.bastion-assume-role-policy.json}"
 }
 
-
-// data "aws_iam_policy_document" "bastion-role-policy" {
-//   statement {
-//     sid = "1"
-
-//     actions = [
-//       "s3:*",
-//     ]
-
-//     resources = [
-//       "arn:aws:s3:::*",
-//     ]
-//   }
-// }
-
-// resource "aws_iam_role_policy" "bastion_policy" {
-//   name = "bastion_policy"
-//   role = "${aws_iam_role.bastion_role.id}"
-
-//   policy = "${data.aws_iam_policy_document.bastion-role-policy.json}"
-// }
-
 resource "aws_iam_role_policy_attachment" "EC2-attach" {
-    role       = "${aws_iam_role.bastion_role.name}"
-    policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-}
-resource "aws_iam_role_policy_attachment" "Route53-attach" {
-    role       = "${aws_iam_role.bastion_role.name}"
-    policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
-}
-resource "aws_iam_role_policy_attachment" "S3-attach" {
-    role       = "${aws_iam_role.bastion_role.name}"
-    policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-}
-resource "aws_iam_role_policy_attachment" "IAM-attach" {
-    role       = "${aws_iam_role.bastion_role.name}"
-    policy_arn = "arn:aws:iam::aws:policy/IAMFullAccess"
-}
-resource "aws_iam_role_policy_attachment" "VPC-attach" {
-    role       = "${aws_iam_role.bastion_role.name}"
-    policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
+  role       = "${aws_iam_role.bastion_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
 }
 
+resource "aws_iam_role_policy_attachment" "Route53-attach" {
+  role       = "${aws_iam_role.bastion_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "S3-attach" {
+  role       = "${aws_iam_role.bastion_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "IAM-attach" {
+  role       = "${aws_iam_role.bastion_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/IAMFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "VPC-attach" {
+  role       = "${aws_iam_role.bastion_role.name}"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
+}
 
 resource "aws_iam_instance_profile" "bastion_profile" {
   name = "bastion_profile"
@@ -126,7 +140,7 @@ resource "aws_instance" "bastion" {
   associate_public_ip_address = true
   user_data                   = "${file("install-bastion.sh")}"
   iam_instance_profile        = "${aws_iam_instance_profile.bastion_profile.name}"
-  key_name = "slavayssiere-sandbox-wescale"
+  key_name                    = "slavayssiere-sandbox-wescale"
 
   tags {
     Name = "Bastion"
