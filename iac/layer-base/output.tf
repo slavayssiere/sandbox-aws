@@ -53,3 +53,7 @@ output "vpc_id" {
 output "vpc_cidr" {
   value = "${var.vpc_cidr}"
 }
+
+output "es_host" {
+  value = "${aws_elasticsearch_domain.es-log.endpoint}"
+}

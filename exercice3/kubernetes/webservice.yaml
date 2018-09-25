@@ -3,15 +3,19 @@ kind: Deployment
 metadata:
   name: ws-deployment
   namespace: exercice3
+  labels:
+    k8s-app: ws-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
       app: webservice
+      k8s-app: ws-deployment
   template:
     metadata:
       labels:
         app: webservice
+        k8s-app: ws-deployment
     spec:
       containers:
       - name: webservice
@@ -45,6 +49,7 @@ metadata:
   namespace: exercice3
   labels:
     app: webservice
+    k8s-app: ws-deployment
 spec:
   ports:
     - port: 8080
@@ -52,6 +57,7 @@ spec:
       name: rest-api-ws
   selector:
     app: webservice
+    k8s-app: ws-deployment
   type: ClusterIP
 ---
 apiVersion: monitoring.coreos.com/v1
@@ -68,6 +74,7 @@ spec:
   selector:
     matchLabels:
       app: webservice
+      k8s-app: ws-deployment
   endpoints:
   - port: rest-api-ws
     interval: 10s
@@ -77,6 +84,9 @@ kind: Ingress
 metadata:
   name: basic-ingress
   namespace: exercice3
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
 spec:
   rules:
   - http:
@@ -85,20 +95,3 @@ spec:
         backend:
           serviceName: ws-service
           servicePort: 8080
----
-kind: HorizontalPodAutoscaler
-apiVersion: autoscaling/v2beta1
-metadata:
-  name: sample-metrics-app-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: ws-deployment
-  minReplicas: 1
-  maxReplicas: 5
-  metrics:
-  - type: Pods
-    pods:
-      metricName: webservice
-      targetAverageValue: 5

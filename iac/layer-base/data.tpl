@@ -1,4 +1,3 @@
-name: test.slavayssiere.wescale
 dns:
     zone_id: ${zone_id}
 network:

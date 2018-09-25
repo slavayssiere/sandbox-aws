@@ -1,7 +1,7 @@
 apiVersion: kops/v1alpha2
 kind: Cluster
 metadata:
-  name: {{ name }}
+  name: {{ environ('NAME') }}
 spec:
   kubernetesVersion: 1.10.5
   additionalPolicies:
@@ -63,7 +63,7 @@ spec:
     rbac: {}
   channel: stable
   cloudProvider: aws
-  configBase: s3://wescale-slavayssiere-kops/{{ name }}
+  configBase: s3://wescale-slavayssiere-kops/{{ environ('NAME') }}
   dnsZone: {{ dns.zone_id }}
   etcdClusters:
   - etcdMembers:
@@ -85,7 +85,7 @@ spec:
   iam:
     allowContainerRegistry: true
     legacy: false
-  masterPublicName: api.{{ name }}
+  masterPublicName: api.{{ environ('NAME') }}
   networking:
     calico: 
       crossSubnet: true
@@ -142,7 +142,7 @@ apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
   labels:
-    kops.k8s.io/cluster: {{ name }}
+    kops.k8s.io/cluster: {{ environ('NAME') }}
   name: master-eu-west-1a
 spec:
   associatePublicIp: false
@@ -161,7 +161,7 @@ apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
   labels:
-    kops.k8s.io/cluster: {{ name }}
+    kops.k8s.io/cluster: {{ environ('NAME') }}
   name: master-eu-west-1b
 spec:
   associatePublicIp: false
@@ -180,7 +180,7 @@ apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
   labels:
-    kops.k8s.io/cluster: {{ name }}
+    kops.k8s.io/cluster: {{ environ('NAME') }}
   name: master-eu-west-1c
 spec:
   associatePublicIp: false
@@ -199,11 +199,11 @@ apiVersion: kops/v1alpha2
 kind: InstanceGroup
 metadata:
   labels:
-    kops.k8s.io/cluster: {{ name }}
+    kops.k8s.io/cluster: {{ environ('NAME') }}
   name: nodes
 spec:
   associatePublicIp: false
-  machineType: t2.large
+  machineType: m5.xlarge
   maxSize: 10
   minSize: 3
   nodeLabels:

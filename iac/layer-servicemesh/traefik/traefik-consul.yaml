@@ -78,8 +78,8 @@ spec:
         volumeMounts:
         - name: ca-certificates
           mountPath: /etc/ssl/certs
-        - name: traefik-consul-data
-          mountPath: /data
+        # - name: traefik-consul-data
+        #   mountPath: /data
         env:
         - name: POD_IP
           valueFrom:
@@ -107,11 +107,11 @@ spec:
       - name: ca-certificates
         hostPath:
           path: /usr/share/ca-certificates/
-  volumeClaimTemplates:
-  - metadata:
-      name: traefik-consul-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 1Gi
+  # volumeClaimTemplates:
+  # - metadata:
+  #     name: traefik-consul-data
+  #   spec:
+  #     accessModes: [ "ReadWriteOnce" ]
+  #     resources:
+  #       requests:
+  #         storage: 1Gi
