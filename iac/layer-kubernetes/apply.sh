@@ -12,5 +12,10 @@ rm ./cluster.yaml
 
 kops update cluster $NAME --yes
 
-terraform apply -var cluster_name=$NAME
+
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
+
+terraform apply \
+    -var "cluster_name=$NAME" \
+    -var "account_id=$AWS_ACCOUNT_ID"
 

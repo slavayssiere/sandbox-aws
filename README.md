@@ -73,8 +73,11 @@ ssh ec2-user@BASTION -N -L 9200:ES_HOST:443 -v
 
 go to http://localhost:9200/_plugin/kibana
 
+https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html#es-vpc-security
 
 # exercice 3
 
 
 kubectl get --raw "/apis/exercice3.metrics.k8s.io/v1beta1"
+
+kubectl -n kube-system delete pod --force --grace-period=0 $(kubectl -n kube-system get pods -l app=external-dns | cut -d ' ' -f 1 |  | tail -n +2)

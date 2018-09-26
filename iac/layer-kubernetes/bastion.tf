@@ -2,10 +2,6 @@ provider "aws" {
   region = "eu-west-1"
 }
 
-variable "cluster_name" {
-  default = "test.slavayssiere.wescale"
-}
-
 terraform {
   backend "s3" {
     bucket = "wescale-slavayssiere-terraform"

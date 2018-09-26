@@ -47,6 +47,8 @@ spec:
     metadata:
       labels:
         app: external-dns
+      annotations:
+        iam.amazonaws.com/role: externalDNS_role
     spec:
       serviceAccountName: external-dns
       containers:
