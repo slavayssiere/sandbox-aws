@@ -2,10 +2,9 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: kibana-ui-ing
-  namespace: kube-system
+  namespace: monitoring
   annotations:
     kubernetes.io/ingress.class: traefik
-    traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
 spec:
   rules:
   - http:
