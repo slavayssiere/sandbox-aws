@@ -1,6 +1,7 @@
 # sandbox-aws
 
 To test Kubernetes on AWS:
+
 - create VPC and networking
 - create & configure k8s
 - send logs to an AWS ESaaS
@@ -8,17 +9,17 @@ To test Kubernetes on AWS:
 - IngressController by Traefik
 - Custom Metrics
 
-+
+et
 
 app test: "exercice3"
 
-# IaC
+## IaC
 
-## prerequisite
+### prerequisite
 
 Connect to your aws account:
 
-```
+```language-bash
 #!/usr/bin/env bash
 unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_STS AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SECURITY_TOKEN AWS_SESSION_TOKEN
 export USERNAME=terraform
@@ -35,67 +36,66 @@ export AWS_SECURITY_TOKEN=${AWS_STS[2]}
 export AWS_SESSION_TOKEN=${AWS_STS[2]}
 ```
 
-
-## layer-base
+### layer-base
 
 go to iac/layer-base
 
-```
+```language-bash
 terraform apply
 ```
 
-## layer-kubernetes
+### layer-kubernetes
 
 go to iac/layer-kubernetes
-```
+
+```language-bash
 ./apply.sh
 ```
 
-## layer-servicemesh
+### layer-servicemesh
 
 go to iac/layer-servicemesh
-```
+
+```language-bash
 ./deploy.sh
 ```
 
-# Test infrastructure
+## Test infrastructure
 
 connect to your bastion:
 
-```
+```language-bash
 cd iac/layer-kubernetes/
 bastion_dns=$(terraform output bastion_public_dns)
 ssh ec2-user@bastion_dns
 ```
 
+test if custom metrics works:
 
-test if custom metrics works: 
-
-```
+```language-bash
 kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1" | jq .
 ```
 
 get LB value:
 
-```
+```language-bash
 LB_TRAEFIK=$(kubectl get svc traefik-ingress-service -n kube-system | cut -d ' ' -f 10)
 ```
 
+```language-bash
 http://$(LB_TRAEFIK)/grafana
 http://$(LB_TRAEFIK)/prometheus
 http://$(LB_TRAEFIK)/_plugin/kibana
+```
 
+## exercice 3
 
-# exercice 3
-
-## deploy 
+### deploy
 
 exercice3/kubernetes/*
 
-## test
+### test
 
-## delete pod
-
+### delete pod
 
 kubectl -n kube-system delete pod --force --grace-period=0 $(kubectl -n kube-system get pods -l k8s-app=fluentd-es | cut -d ' ' -f 1 | tail -n +2)
-

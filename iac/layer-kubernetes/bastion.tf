@@ -126,10 +126,10 @@ resource "aws_iam_instance_profile" "bastion_profile" {
   role = "${aws_iam_role.bastion_role.name}"
 }
 
-resource "aws_key_pair" "slavayssiere-sandbox-wescale" {
-  key_name   = "slavayssiere-sandbox-wescale"
-  public_key = "${file("~/.ssh/id_rsa.pub")}"
-}
+// resource "aws_key_pair" "slavayssiere-sandbox-wescale" {
+//   key_name   = "slavayssiere-sandbox-wescale"
+//   public_key = "${file("~/.ssh/id_rsa.pub")}"
+// }
 
 resource "aws_instance" "bastion" {
   ami                         = "ami-0bdb1d6c15a40392c"
