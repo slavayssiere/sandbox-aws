@@ -12,6 +12,7 @@ terraform {
 
 data "terraform_remote_state" "layer-base" {
   backend = "s3"
+
   config {
     bucket = "wescale-slavayssiere-terraform"
     region = "eu-west-1"

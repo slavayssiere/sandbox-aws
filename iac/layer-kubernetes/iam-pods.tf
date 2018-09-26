@@ -1,6 +1,3 @@
-
-
-
 data "aws_iam_policy_document" "externalDNS_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -11,6 +8,7 @@ data "aws_iam_policy_document" "externalDNS_assume_role_policy" {
       identifiers = ["ec2.amazonaws.com"]
     }
   }
+
   statement {
     actions = ["sts:AssumeRole"]
     effect  = "Allow"
@@ -21,7 +19,6 @@ data "aws_iam_policy_document" "externalDNS_assume_role_policy" {
     }
   }
 }
-
 
 data "aws_iam_policy_document" "externalDNS_role_policy" {
   statement {
@@ -36,9 +33,11 @@ data "aws_iam_policy_document" "externalDNS_role_policy" {
 
   statement {
     actions = [
-       "route53:ListHostedZones",
-       "route53:ListResourceRecordSets"]
-    effect  = "Allow"
+      "route53:ListHostedZones",
+      "route53:ListResourceRecordSets",
+    ]
+
+    effect = "Allow"
 
     resources = ["*"]
   }
@@ -50,7 +49,6 @@ resource "aws_iam_role_policy" "externalDNS_role_policy" {
 
   policy = "${data.aws_iam_policy_document.externalDNS_role_policy.json}"
 }
-
 
 resource "aws_iam_role" "externalDNS_role" {
   name = "externalDNS_role"
