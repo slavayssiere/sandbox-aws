@@ -41,7 +41,7 @@ export AWS_SESSION_TOKEN=${AWS_STS[2]}
 go to iac/layer-base
 
 ```
-terraform apply --yes
+terraform apply
 ```
 
 ## layer-kubernetes
@@ -50,7 +50,6 @@ go to iac/layer-kubernetes
 ```
 ./apply.sh
 ```
-
 
 ## layer-servicemesh
 
@@ -61,23 +60,42 @@ go to iac/layer-servicemesh
 
 # Test infrastructure
 
+connect to your bastion:
+
+```
+cd iac/layer-kubernetes/
+bastion_dns=$(terraform output bastion_public_dns)
+ssh ec2-user@bastion_dns
+```
+
+
 test if custom metrics works: 
 
+```
 kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1" | jq .
+```
 
-test if grafana works:
+get LB value:
 
-Traefik LoadBalanceur /grafana
+```
+LB_TRAEFIK=$(kubectl get svc traefik-ingress-service -n kube-system | cut -d ' ' -f 10)
+```
 
-ssh ec2-user@BASTION -N -L 9200:ES_HOST:443 -v
+http://$(LB_TRAEFIK)/grafana
+http://$(LB_TRAEFIK)/prometheus
+http://$(LB_TRAEFIK)/_plugin/kibana
 
-go to http://localhost:9200/_plugin/kibana
-
-https://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html#es-vpc-security
 
 # exercice 3
 
+## deploy 
 
-kubectl get --raw "/apis/exercice3.metrics.k8s.io/v1beta1"
+exercice3/kubernetes/*
 
-kubectl -n kube-system delete pod --force --grace-period=0 $(kubectl -n kube-system get pods -l app=external-dns | cut -d ' ' -f 1 |  | tail -n +2)
+## test
+
+## delete pod
+
+
+kubectl -n kube-system delete pod --force --grace-period=0 $(kubectl -n kube-system get pods -l k8s-app=fluentd-es | cut -d ' ' -f 1 | tail -n +2)
+
