@@ -541,7 +541,7 @@ data:
       host elasticsearch-logging
       port 443
       scheme https
-      ssl_verify true
+      ssl_verify false
       logstash_prefix applogs
       logstash_format true
       <buffer>

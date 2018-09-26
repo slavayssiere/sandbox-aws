@@ -18,3 +18,11 @@ data "terraform_remote_state" "layer-base" {
     key    = "kubernetes/layer-base"
   }
 }
+
+variable "region" {
+  default = "eu-west-1"
+}
+
+variable "account_id" {
+  default = "549637939820"
+}

@@ -1,9 +1,10 @@
 
 # https://raw.githubusercontent.com/kubernetes/kops/master/addons/prometheus-operator/v0.19.0.yaml
 
+
 cd manifests
-kubectl apply -f .
 kubectl apply -f v0.19.0.yaml
+kubectl apply -f .
 cd ..
 
 cd traefik
@@ -21,6 +22,8 @@ kubectl apply -f .
 cd ..
 
 helm init --service-account tiller
+
+curl -XPOST $ES_HOST/api/saved_objects/index-pattern -H "Content-Type: application/json" -H "kbn-xsrf: true" -d @kibana/test-elasticsearch.json
 
 # # the traefik webui
 # htpasswd -bc ./auth traefik password

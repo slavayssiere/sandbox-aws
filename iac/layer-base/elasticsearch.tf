@@ -78,28 +78,3 @@ resource "aws_elasticsearch_domain" "es-log" {
     Utility = "logs"
   }
 }
-
-
-// data "aws_iam_policy_document" "es_assume_role_policy" {
-//   statement {
-//     actions = ["sts:AssumeRole"]
-//     effect  = "Allow"
-
-//     principals {
-//       type        = "Service"
-//       identifiers = ["es.amazonaws.com"]
-//     }
-//   }
-// }
-
-// resource "aws_iam_role" "es_role" {
-//   name = "ESRole"
-
-//   assume_role_policy = "${data.aws_iam_policy_document.es_assume_role_policy.json}"
-// }
-
-
-// resource "aws_iam_role_policy_attachment" "ES-attach" {
-//   role       = "${aws_iam_role.es_role.name}"
-//   policy_arn = "arn:aws:iam::aws:policy/aws-service-role/AmazonElasticsearchServiceRolePolicy"
-// }

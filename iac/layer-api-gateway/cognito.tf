@@ -2,7 +2,7 @@
 resource "aws_cognito_user_pool" "admin-pool" {
   name = "admin-pool"
 
-  alias_attributes = "email"
+  alias_attributes = ["email"]
 
   admin_create_user_config {
       allow_admin_create_user_only = true

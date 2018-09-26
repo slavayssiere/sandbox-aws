@@ -55,7 +55,11 @@ create:
 go to iac/layer-base
 
 ```language-bash
-terraform apply
+terraform apply \
+    -var "account_id=$ACCOUNT_ID" \
+    -var "region=eu-west-1" \
+    -var "private_dns_zone=$PRIVATE_DNS_ZONE" \
+    -backend-config="bucket=$BUCKET_TFSTATES"
 ```
 
 ### layer-kubernetes

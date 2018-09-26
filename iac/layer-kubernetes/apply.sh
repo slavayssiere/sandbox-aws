@@ -2,11 +2,23 @@
 
 cd ../layer-base
 private_dns_zone=$(terraform output private_dns_zone)
+export ES_HOST=$(terraform output es_host)
 cd ../layer-kubernetes
 
-export KOPS_STATE_STORE=s3://wescale-slavayssiere-kops
+
+export BUCKET_TFSTATES="wescale-slavayssiere-terraform"
+
+if [[ -z "${KOPS_STATE_STORE}" ]]; then
+  export KOPS_STATE_STORE=s3://wescale-slavayssiere-kops
+fi
+
+if [[ -z "${NAME_CLUSTER}" ]]; then
+  export NAME=test.$private_dns_zone
+else
+  export NAME=$NAME_CLUSTER.$private_dns_zone
+fi
+
 export CLOUD=aws
-export NAME=test.$private_dns_zone
 
 jinja2 cluster-template.yaml ../data.yaml --format=yaml > ./cluster.yaml
 jinja2 install-bastion-template.sh > install-bastion.sh
@@ -21,7 +33,8 @@ AWS_ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 
 terraform apply \
     -var "cluster_name=$NAME" \
-    -var "account_id=$AWS_ACCOUNT_ID"
+    -var "account_id=$AWS_ACCOUNT_ID" \
+    -backend-config="bucket=$BUCKET_TFSTATES"
 
 rm ./install-bastion.sh
 
