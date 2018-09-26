@@ -36,6 +36,20 @@ export AWS_SECURITY_TOKEN=${AWS_STS[2]}
 export AWS_SESSION_TOKEN=${AWS_STS[2]}
 ```
 
+install:
+
+- install jinja2-cli
+- install jq
+- install terraform
+- install kops
+- install kubectl
+
+create:
+
+- bucket s3 pour les tfstates terraform
+- bucket s3 pour kops
+
+
 ### layer-base
 
 go to iac/layer-base
