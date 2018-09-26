@@ -551,6 +551,5 @@ data:
         queue_limit_length 32
         retry_max_interval 30
         retry_forever true
-        slow_flush_log_threshold 60.0
       </buffer>
     </match>

@@ -54,6 +54,10 @@ output "vpc_cidr" {
   value = "${var.vpc_cidr}"
 }
 
+output "private_dns_zone" {
+  value = "${var.private_dns_zone}"
+}
+
 output "es_host" {
   value = "${aws_elasticsearch_domain.es-log.endpoint}"
 }

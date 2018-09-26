@@ -2,24 +2,6 @@ variable "es_log_domain" {
   default = "logs-applicatif"
 }
 
-// {
-//   "Version": "2012-10-17",
-//   "Statement": [
-//     {
-//       "Effect": "Allow",
-//       "Principal": {
-//         "AWS": [
-//           "*"
-//         ]
-//       },
-//       "Action": [
-//         "es:*"
-//       ],
-//       "Resource": "arn:aws:es:eu-west-1:549637939820:domain/logs-applicatif/*"
-//     }
-//   ]
-// }
-
 data "aws_iam_policy_document" "elasticsearch_access_policy" {
   statement {
     actions   = ["es:*"]

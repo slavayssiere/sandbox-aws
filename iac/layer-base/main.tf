@@ -18,6 +18,10 @@ variable "region" {
   default = "eu-west-1"
 }
 
+variable "private_dns_zone" {
+  default = "slavayssiere.wescale"
+}
+
 variable "vpc_cidr" {
   description = "CIDR for the whole VPC"
   default     = "10.0.0.0/16"
