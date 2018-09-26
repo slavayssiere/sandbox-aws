@@ -1,8 +1,12 @@
 #!/bin/bash
 
+cd ../layer-base
+private_dns_zone=$(terraform output private_dns_zone)
+cd ../layer-kubernetes
+
 export KOPS_STATE_STORE=s3://wescale-slavayssiere-kops
 export CLOUD=aws
-export NAME=test.slavayssiere.wescale
+export NAME=test.$private_dns_zone
 
 jinja2 cluster-template.yaml ../data.yaml --format=yaml > ./cluster.yaml
 
