@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "externalDNS_assume_role_policy" {
+data "aws_iam_policy_document" "pods_assume_role_policy" {
   statement {
     actions = ["sts:AssumeRole"]
     effect  = "Allow"
@@ -53,5 +53,5 @@ resource "aws_iam_role_policy" "externalDNS_role_policy" {
 resource "aws_iam_role" "externalDNS_role" {
   name = "externalDNS_role"
 
-  assume_role_policy = "${data.aws_iam_policy_document.externalDNS_assume_role_policy.json}"
+  assume_role_policy = "${data.aws_iam_policy_document.pods_assume_role_policy.json}"
 }
