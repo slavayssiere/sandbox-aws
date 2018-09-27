@@ -49,22 +49,36 @@ create:
 - bucket s3 pour les tfstates terraform
 - bucket s3 pour kops
 
-
 ### layer-base
 
 go to iac/layer-base
+
+the first time:
+
+```language-bash
+terraform init -backend-config="bucket=$BUCKET_TFSTATES"
+```
+
+for next apply:
 
 ```language-bash
 terraform apply \
     -var "account_id=$ACCOUNT_ID" \
     -var "region=eu-west-1" \
-    -var "private_dns_zone=$PRIVATE_DNS_ZONE" \
-    -backend-config="bucket=$BUCKET_TFSTATES"
+    -var "private_dns_zone=$PRIVATE_DNS_ZONE"
 ```
 
 ### layer-kubernetes
 
 go to iac/layer-kubernetes
+
+the first time:
+
+```language-bash
+terraform init -backend-config="bucket=$BUCKET_TFSTATES"
+```
+
+for next apply:
 
 ```language-bash
 ./apply.sh

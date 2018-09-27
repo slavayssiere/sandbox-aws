@@ -33,8 +33,7 @@ AWS_ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 
 terraform apply \
     -var "cluster_name=$NAME" \
-    -var "account_id=$AWS_ACCOUNT_ID" \
-    -backend-config="bucket=$BUCKET_TFSTATES"
+    -var "account_id=$AWS_ACCOUNT_ID"
 
 rm ./install-bastion.sh
 

@@ -9,12 +9,13 @@ export NAME_CLUSTER=test
 
 # dans layer-base
 
+# la première fois
+terraform init -backend-config="bucket=$BUCKET_TFSTATES"
+
 terraform apply \
     -var "account_id=$ACCOUNT_ID" \
     -var "region=eu-west-1" \
-    -var "private_dns_zone=$PRIVATE_DNS_ZONE" \
-    -backend-config="bucket=$BUCKET_TFSTATES"
-
+    -var "private_dns_zone=$PRIVATE_DNS_ZONE"
 
 # dans layer-kubernetes
 
