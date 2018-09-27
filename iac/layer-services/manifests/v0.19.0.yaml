@@ -5467,6 +5467,11 @@ spec:
   replicas: 3
   serviceAccountName: alertmanager-main
   version: v0.14.0
+  receivers:
+  - name: 'sns-forwarder'
+    webhook_configs:
+    - send_resolved: True
+      url: http://alertmanager-sns-forwarder-svc/alert/alertmanager-sns
 ---
 apiVersion: v1
 data:

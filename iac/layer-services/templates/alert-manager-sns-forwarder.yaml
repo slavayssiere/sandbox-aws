@@ -3,7 +3,7 @@ apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
   name: alertmanager-sns-forwarder
-  namespace: default
+  namespace: monitoring
   labels:
     component: alertmanager-sns-forwarder
 spec:
@@ -26,7 +26,7 @@ spec:
         image: alertmanager-sns-forwarder:0.1
         imagePullPolicy: Always
         # You can also specify arguments
-        args: ["--addr=:9087", "--debug", "--arn-prefix={{ environ('ACCOUNT_ID') }}"]
+        args: ["--addr=:9087", "--debug", "--arn-prefix=arn:aws:sns:${var.region}:{{ environ('ACCOUNT_ID') }}:"]
         env:
           - name: AWS_REGION
             value: "eu-west-1"
@@ -60,7 +60,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: alertmanager-sns-forwarder-svc
-  namespace: default
+  namespace: monitoring
   labels:
     component:  alertmanager-sns-forwarder
 spec:
@@ -75,7 +75,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: alertmanager-sns-forwarder-metrics-sm
-  namespace: default
+  namespace: monitoring
   labels:
     component: alertmanager-sns-forwarder
 spec:
