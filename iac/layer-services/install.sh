@@ -23,7 +23,7 @@ cd ..
 
 helm init --service-account tiller
 
-curl -XPOST $ES_HOST/api/saved_objects/index-pattern -H "Content-Type: application/json" -H "kbn-xsrf: true" -d @kibana/test-elasticsearch.json
+curl -XPOST $ES_HOST/api/saved_objects/index-pattern -H "Content-Type: application/json" -H "kbn-xsrf: true" -d @kibana/default-index-pattern.json
 
 # # the traefik webui
 # htpasswd -bc ./auth traefik password

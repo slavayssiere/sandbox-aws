@@ -14,10 +14,14 @@ data "terraform_remote_state" "layer-base" {
   backend = "s3"
 
   config {
-    bucket = "wescale-slavayssiere-terraform"
+    bucket = "${var.bucket_layer_base}"
     region = "eu-west-1"
     key    = "kubernetes/layer-base"
   }
+}
+
+variable "bucket_layer_base" {
+  default = "wescale-slavayssiere-terraform"
 }
 
 resource "aws_security_group" "allow_ssh" {
@@ -126,10 +130,10 @@ resource "aws_iam_instance_profile" "bastion_profile" {
   role = "${aws_iam_role.bastion_role.name}"
 }
 
-// resource "aws_key_pair" "slavayssiere-sandbox-wescale" {
-//   key_name   = "slavayssiere-sandbox-wescale"
-//   public_key = "${file("~/.ssh/id_rsa.pub")}"
-// }
+resource "aws_key_pair" "sandbox-key" {
+  key_name   = "sandbox-key"
+  public_key = "${file("~/.ssh/id_rsa.pub")}"
+}
 
 resource "aws_instance" "bastion" {
   ami                         = "ami-0bdb1d6c15a40392c"
@@ -139,7 +143,7 @@ resource "aws_instance" "bastion" {
   associate_public_ip_address = true
   user_data                   = "${file("install-bastion.sh")}"
   iam_instance_profile        = "${aws_iam_instance_profile.bastion_profile.name}"
-  key_name                    = "slavayssiere-sandbox-wescale"
+  key_name                    = "sandbox-key"
 
   tags {
     Name = "Bastion-${var.cluster_name}"
