@@ -170,7 +170,7 @@ metadata:
   name: nodes
 spec:
   associatePublicIp: false
-  machineType: m5.xlarge
+  machineType: m5.large
   maxSize: 10
   minSize: 3
   nodeLabels:
