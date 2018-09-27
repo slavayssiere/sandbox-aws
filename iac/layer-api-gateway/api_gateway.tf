@@ -22,8 +22,7 @@ resource "aws_api_gateway_authorizer" "demo" {
 }
 
 resource "aws_api_gateway_deployment" "demo_env" {
-  depends_on = [
-  ]
+  depends_on = []
 
   rest_api_id = "${aws_api_gateway_rest_api.demo.id}"
   stage_name  = "dev"
