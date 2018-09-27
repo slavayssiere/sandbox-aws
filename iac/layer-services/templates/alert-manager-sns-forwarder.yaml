@@ -23,15 +23,17 @@ spec:
       restartPolicy: Always
       containers:
       - name: alertmanager-sns-forwarder
-        image: alertmanager-sns-forwarder:0.1
+        image: slavayssiere/alertmanager-sns-forwarder:0.1
         imagePullPolicy: Always
         # You can also specify arguments
-        args: ["--addr=:9087", "--debug", "--arn-prefix=arn:aws:sns:${var.region}:{{ environ('ACCOUNT_ID') }}:"]
+        # args: ["--addr=:9087", "--debug", "--arn-prefix=arn:aws:sns:${var.region}:{{ environ('ACCOUNT_ID') }}:"]
         env:
           - name: AWS_REGION
             value: "eu-west-1"
           - name: AWS_DEFAULT_REGION
             value: "eu-west-1"
+          - name: SNS_FORWARDER_ARN_PREFIX
+            value: "arn:aws:sns:eu-west-1:{{ environ('ACCOUNT_ID') }}:"
         resources:
           limits:
             memory: 1Gi
@@ -78,6 +80,7 @@ metadata:
   namespace: monitoring
   labels:
     component: alertmanager-sns-forwarder
+    k8s-app: alertmanager-sns-forwarder
 spec:
   selector:
     component: alertmanager-sns-forwarder

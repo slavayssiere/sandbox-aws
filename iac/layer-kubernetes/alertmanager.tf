@@ -6,7 +6,7 @@ resource "aws_sns_topic" "alertmanager-sns" {
 resource "aws_iam_policy_attachment" "sns-attach" {
   name       = "sns-attachment"
   roles      = ["${aws_iam_role.alertmanager_sns_role.name}"]
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSNSReadOnlyAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSNSFullAccess"
 }
 
 resource "aws_iam_role" "alertmanager_sns_role" {

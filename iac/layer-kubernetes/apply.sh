@@ -21,6 +21,8 @@ else
 fi
 
 export CLOUD=aws
+export ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
+
 
 jinja2 cluster-template.yaml ../data.yaml --format=yaml > ./cluster.yaml
 jinja2 install-bastion-template.sh > install-bastion.sh
@@ -35,5 +37,5 @@ AWS_ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 
 terraform apply \
     -var "cluster_name=$NAME" \
-    -var "account_id=$AWS_ACCOUNT_ID" \
+    -var "account_id=$ACCOUNT_ID" \
     -var "bucket_layer_base=$BUCKET_TFSTATES"
