@@ -30,7 +30,7 @@ spec:
     rbac: {}
   channel: stable
   cloudProvider: aws
-  configBase: s3://wescale-slavayssiere-kops/{{ environ('NAME') }}
+  configBase: {{ environ('KOPS_STATE_STORE') }}/{{ environ('NAME') }}
   dnsZone: {{ dns.zone_id }}
   etcdClusters:
   - etcdMembers:

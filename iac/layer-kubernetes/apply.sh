@@ -6,7 +6,9 @@ export ES_HOST=$(terraform output es_host)
 cd ../layer-kubernetes
 
 
-export BUCKET_TFSTATES="wescale-slavayssiere-terraform"
+if [[ -z "${BUCKET_TFSTATES}" ]]; then
+  export BUCKET_TFSTATES="wescale-slavayssiere-terraform"
+fi
 
 if [[ -z "${KOPS_STATE_STORE}" ]]; then
   export KOPS_STATE_STORE=s3://wescale-slavayssiere-kops

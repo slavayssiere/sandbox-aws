@@ -6,7 +6,7 @@ terraform {
   backend "s3" {
     bucket = "wescale-slavayssiere-terraform"
     region = "eu-west-1"
-    key    = "kubernetes/layer-kubernetes"
+    key    = "kubernetes/layer-kafka"
   }
 }
 
@@ -32,7 +32,7 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # allow https for kops/kubectl/helm install
+  # allow https for client installation
   egress {
     from_port   = 443
     to_port     = 443
@@ -40,43 +40,12 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  # allow https for kops/kubectl install
   egress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-}
-
-data "aws_security_group" "sg-master-kubernetes" {
-  name   = "masters.${var.cluster_name}"
-  vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
-}
-
-data "aws_security_group" "sg-nodes-kubernetes" {
-  name   = "nodes.${var.cluster_name}"
-  vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
-}
-
-resource "aws_security_group_rule" "allow_ssh_bastion_master" {
-  type                     = "ingress"
-  from_port                = 22
-  to_port                  = 22
-  protocol                 = "tcp"
-  source_security_group_id = "${aws_security_group.allow_ssh.id}"
-
-  security_group_id = "${data.aws_security_group.sg-master-kubernetes.id}"
-}
-
-resource "aws_security_group_rule" "allow_ssh_bastion_nodes" {
-  type                     = "ingress"
-  from_port                = 22
-  to_port                  = 22
-  protocol                 = "tcp"
-  source_security_group_id = "${aws_security_group.allow_ssh.id}"
-
-  security_group_id = "${data.aws_security_group.sg-nodes-kubernetes.id}"
 }
 
 data "aws_iam_policy_document" "bastion-assume-role-policy" {
@@ -96,40 +65,10 @@ resource "aws_iam_role" "bastion_role" {
   assume_role_policy = "${data.aws_iam_policy_document.bastion-assume-role-policy.json}"
 }
 
-resource "aws_iam_role_policy_attachment" "EC2-attach" {
-  role       = "${aws_iam_role.bastion_role.name}"
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-}
-
-resource "aws_iam_role_policy_attachment" "Route53-attach" {
-  role       = "${aws_iam_role.bastion_role.name}"
-  policy_arn = "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
-}
-
 resource "aws_iam_role_policy_attachment" "S3-attach" {
   role       = "${aws_iam_role.bastion_role.name}"
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
-
-resource "aws_iam_role_policy_attachment" "IAM-attach" {
-  role       = "${aws_iam_role.bastion_role.name}"
-  policy_arn = "arn:aws:iam::aws:policy/IAMFullAccess"
-}
-
-resource "aws_iam_role_policy_attachment" "VPC-attach" {
-  role       = "${aws_iam_role.bastion_role.name}"
-  policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
-}
-
-resource "aws_iam_instance_profile" "bastion_profile" {
-  name = "bastion_profile"
-  role = "${aws_iam_role.bastion_role.name}"
-}
-
-// resource "aws_key_pair" "slavayssiere-sandbox-wescale" {
-//   key_name   = "slavayssiere-sandbox-wescale"
-//   public_key = "${file("~/.ssh/id_rsa.pub")}"
-// }
 
 resource "aws_instance" "bastion" {
   ami                         = "ami-0bdb1d6c15a40392c"
