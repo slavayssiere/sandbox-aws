@@ -1,6 +1,12 @@
 #!/bin/bash
 
 
+cd ../layer-base
+private_dns_zone=$(terraform output private_dns_zone)
+export ES_HOST=$(terraform output es_host)
+cd ../layer-kubernetes
+
+
 if [[ -z "${BUCKET_TFSTATES}" ]]; then
   export BUCKET_TFSTATES="wescale-slavayssiere-terraform"
 fi

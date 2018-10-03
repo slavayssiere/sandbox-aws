@@ -56,6 +56,9 @@ spec:
   networking:
     calico: 
       crossSubnet: true
+  kubeAPIServer:
+    runtimeConfig:
+      admissionregistration.k8s.io/v1alpha1: "true"
   nonMasqueradeCIDR: 100.64.0.0/10
   kubernetesApiAccess:
   - {{ network.cidr }}
@@ -114,7 +117,7 @@ metadata:
 spec:
   associatePublicIp: false
   machineType: t2.small
-  maxSize: 1
+  maxSize: 3
   minSize: 1
   nodeLabels:
     kops.k8s.io/instancegroup: master-eu-west-1a
@@ -133,7 +136,7 @@ metadata:
 spec:
   associatePublicIp: false
   machineType: t2.small
-  maxSize: 1
+  maxSize: 3
   minSize: 1
   nodeLabels:
     kops.k8s.io/instancegroup: master-eu-west-1b
@@ -152,7 +155,7 @@ metadata:
 spec:
   associatePublicIp: false
   machineType: t2.small
-  maxSize: 1
+  maxSize: 3
   minSize: 1
   nodeLabels:
     kops.k8s.io/instancegroup: master-eu-west-1c

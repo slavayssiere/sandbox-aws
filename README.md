@@ -130,4 +130,8 @@ exercice3/kubernetes/*
 
 ### delete pod
 
-kubectl -n kube-system delete pod --force --grace-period=0 $(kubectl -n kube-system get pods -l k8s-app=fluentd-es | cut -d ' ' -f 1 | tail -n +2)
+kubectl -n monitoring delete pod --force --grace-period=0 $(kubectl -n monitoring get pods -l k8s-app=fluentd-es | cut -d ' ' -f 1 | tail -n +2)
+
+### alertmanager
+
+https://gist.github.com/cherti/61ec48deaaab7d288c9fcf17e700853a

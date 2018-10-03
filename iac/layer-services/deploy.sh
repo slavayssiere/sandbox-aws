@@ -10,7 +10,7 @@ cd ../layer-services
 
 ./gencerts.sh
 
-export AWS_ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
+export ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 
 jinja2 ./templates/kube2iam.yaml > ./manifests/kube2iam.yaml
 jinja2 ./templates/fluentd-to-es.yaml > ./manifests/fluentd-to-es.yaml

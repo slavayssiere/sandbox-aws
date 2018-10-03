@@ -5,3 +5,6 @@ variable "cluster_name" {
 variable "account_id" {
   default = "549637939820"
 }
+
+variable "phone_number" {
+}

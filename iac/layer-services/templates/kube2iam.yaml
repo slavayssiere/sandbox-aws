@@ -53,7 +53,7 @@ spec:
           args:
             - "--app-port=8181"
             - "--iptables=true"
-            - "--base-role-arn=arn:aws:iam::{{ environ('AWS_ACCOUNT_ID') }}:role/"
+            - "--base-role-arn=arn:aws:iam::{{ environ('ACCOUNT_ID') }}:role/"
             - "--host-ip=$(HOST_IP)"
             - "--host-interface=cali+"
             - "--node=$(NODE_NAME)"

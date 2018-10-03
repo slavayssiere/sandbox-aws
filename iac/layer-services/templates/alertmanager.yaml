@@ -1,0 +1,13 @@
+global:
+  resolve_timeout: 5m
+route:
+  group_by: ['job']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+  receiver: 'sns-forwarder'
+receivers:
+- name: 'sns-forwarder'
+  webhook_configs:
+  - send_resolved: True
+    url: http://alertmanager-sns-forwarder-svc:9087/alert/alertmanager-sns

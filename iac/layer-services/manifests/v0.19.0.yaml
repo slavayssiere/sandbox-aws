@@ -5467,20 +5467,6 @@ spec:
   replicas: 3
   serviceAccountName: alertmanager-main
   version: v0.14.0
-  receivers:
-  - name: 'sns-forwarder'
-    webhook_configs:
-    - send_resolved: True
-      url: http://alertmanager-sns-forwarder-svc/alert/alertmanager-sns
----
-apiVersion: v1
-data:
-  alertmanager.yaml: Cmdsb2JhbDoKICByZXNvbHZlX3RpbWVvdXQ6IDVtCnJvdXRlOgogIGdyb3VwX2J5OiBbJ2pvYiddCiAgZ3JvdXBfd2FpdDogMzBzCiAgZ3JvdXBfaW50ZXJ2YWw6IDVtCiAgcmVwZWF0X2ludGVydmFsOiAxMmgKICByZWNlaXZlcjogJ251bGwnCiAgcm91dGVzOgogIC0gbWF0Y2g6CiAgICAgIGFsZXJ0bmFtZTogRGVhZE1hbnNTd2l0Y2gKICAgIHJlY2VpdmVyOiAnbnVsbCcKcmVjZWl2ZXJzOgotIG5hbWU6ICdudWxsJwo=
-kind: Secret
-metadata:
-  name: alertmanager-main
-  namespace: monitoring
-type: Opaque
 ---
 apiVersion: v1
 kind: Service
@@ -12981,7 +12967,7 @@ metadata:
 spec:
   alerting:
     alertmanagers:
-    - name: alertmanager-main
+    - name: alertmanager-operated
       namespace: monitoring
       port: web
   baseImage: quay.io/prometheus/prometheus

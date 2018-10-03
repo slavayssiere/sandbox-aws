@@ -1,9 +1,15 @@
 
 # https://raw.githubusercontent.com/kubernetes/kops/master/addons/prometheus-operator/v0.19.0.yaml
 
+until kops validate  cluster
+do
+    echo "Wait for cluster provisionning"
+    sleep 1
+done
 
 cd manifests
 kubectl apply -f v0.19.0.yaml
+kubectl -n monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml
 kubectl apply -f .
 cd ..
 
