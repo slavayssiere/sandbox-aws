@@ -29,7 +29,24 @@ cd ..
 
 helm init --service-account tiller
 
-curl -XPOST $ES_HOST/api/saved_objects/index-pattern -H "Content-Type: application/json" -H "kbn-xsrf: true" -d @kibana/default-index-pattern.json
+
+# curl -XPOST $ES_HOST/api/saved_objects/index-pattern -H "Content-Type: application/json" -H "kbn-xsrf: true" -d @kibana/default-index-pattern.json
+
+# curl -XPOST -H 'Content-Type: application/json' \
+#   "$ES_HOST/.kibana/index-pattern/applogs-*" \
+#   -d'{"title":"applogs-*","timeFieldName":"@timestamp","notExpandable":true}'
+
+# curl -XDELETE -H 'Content-Type: application/json' \
+#   "$ES_HOST/.kibana/index-pattern/applogs-*"
+
+# curl -f -XPOST -H 'Content-Type: application/json' \
+#     -H 'kbn-xsrf: anything' \
+#     "$ES_HOST/api/saved_objects/index-pattern/applogs-*" \
+#     -d'{"attributes":{"title":"applogs-*","timeFieldName":"@timestamp"}}'
+
+# curl -XPOST "$ES_HOST/api/saved_objects/index-pattern/applogs-*" -H "Content-Type: application/json" -H "kbn-xsrf: true" -d @kibana/default-index-pattern.json
+
+# curl "$ES_HOST/api/saved_objects/index-pattern/applogs-*" -H "Content-Type: application/json" -H "kbn-xsrf: true"
 
 # # the traefik webui
 # htpasswd -bc ./auth traefik password

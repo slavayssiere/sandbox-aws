@@ -19,6 +19,8 @@ spec:
       port: 8300
     - name: consuldns
       port: 8600
+    - name: metrics
+      port: 9107
   clusterIP: None
   selector:
     app: traefik-consul
