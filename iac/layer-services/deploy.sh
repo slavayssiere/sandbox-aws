@@ -8,7 +8,13 @@ cd ../layer-base
 export ES_HOST=$(terraform output es_host)
 cd ../layer-services
 
-./gencerts.sh
+FILE="./cm-adapter-serving-certs.yaml"
+if [ ! -e "$FILE" ]; then
+   echo "File $FILE does not exist."
+   ./gencerts.sh
+fi
+
+
 
 export ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 

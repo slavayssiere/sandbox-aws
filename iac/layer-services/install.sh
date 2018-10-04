@@ -1,7 +1,7 @@
 
 # https://raw.githubusercontent.com/kubernetes/kops/master/addons/prometheus-operator/v0.19.0.yaml
 
-until kops validate  cluster
+until kops validate cluster
 do
     echo "Wait for cluster provisionning"
     sleep 1

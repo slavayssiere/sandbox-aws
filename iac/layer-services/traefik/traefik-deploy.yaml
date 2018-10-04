@@ -45,6 +45,8 @@ spec:
         - name: admin
           containerPort: 8080
           hostPort: 8080
+        - name: metrics
+          containerPort: 8082
         securityContext:
           capabilities:
             drop:
@@ -80,4 +82,17 @@ spec:
           name: traefik-conf
         name: config
 ---
-
+apiVersion: extensions/v1beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: traefik-ingress-controller-hpa
+  namespace: kube-system
+spec:
+  scaleRef:
+    kind: Deployment
+    name: traefik-ingress-controller
+    namespace: kube-system
+  minReplicas: 3
+  maxReplicas: 10
+  cpuUtilization:
+    targetPercentage: 50

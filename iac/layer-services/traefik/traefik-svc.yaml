@@ -5,6 +5,8 @@ metadata:
   namespace: kube-system
   annotations:
     external-dns.alpha.kubernetes.io/hostname: test-kubernetes.aws-wescale.slavayssiere.fr
+  label:
+    k8s-app: traefik-ingress-lb
 spec:
   type: LoadBalancer
   externalTrafficPolicy: Local
@@ -20,4 +22,7 @@ spec:
     - protocol: TCP
       port: 443
       name: web-secure
+    - protocol: TCP
+      port: 8082
+      name: metrics
     
