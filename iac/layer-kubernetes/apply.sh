@@ -25,7 +25,6 @@ export ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 
 
 jinja2 cluster-template.yaml ../data.yaml --format=yaml > ./cluster.yaml
-jinja2 install-bastion-template.sh > install-bastion.sh
 
 kops create -f ./cluster.yaml
 kops create secret --name $NAME sshpublickey admin -i ~/.ssh/id_rsa.pub
@@ -33,9 +32,9 @@ rm ./cluster.yaml
 
 kops update cluster $NAME --yes
 
-AWS_ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
-
+cd terraform
 terraform apply \
     -var "cluster_name=$NAME" \
     -var "account_id=$ACCOUNT_ID" \
     -var "bucket_layer_base=$BUCKET_TFSTATES"
+cd ..

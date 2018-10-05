@@ -24,12 +24,11 @@ fi
 export CLOUD=aws
 export ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 
-touch install-bastion.sh
+cd terraform
 terraform destroy \
     -var "cluster_name=$NAME" \
     -var "account_id=$ACCOUNT_ID" \
     -var "bucket_layer_base=$BUCKET_TFSTATES"
-
-rm install-bastion.sh
+cd ..
 
 kops delete cluster $NAME --yes

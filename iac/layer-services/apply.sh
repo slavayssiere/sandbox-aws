@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ../layer-kubernetes
+cd ../layer-bastion
 bastion_hostname=$(terraform output bastion_public_dns)
 cd ../layer-services
 
@@ -13,8 +13,6 @@ if [ ! -e "$FILE" ]; then
    echo "File $FILE does not exist."
    ./gencerts.sh
 fi
-
-
 
 export ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 

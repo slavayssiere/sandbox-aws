@@ -7,14 +7,14 @@ resource "aws_security_group" "kafka_sg" {
     from_port                = 22
     to_port                  = 22
     protocol                 = "tcp"
-    source_security_group_id = "${aws_security_group.allow_ssh.id}"
+    security_groups = ["${data.terraform_remote_state.layer-bastion.sg_bastion}"]
   }
 
   egress {
     from_port = 443
     to_port   = 443
     protocol  = "tcp"
-    cidr      = ["0.0.0.0/0"]
+    cidr_blocks      = ["0.0.0.0/0"]
   }
 }
 
@@ -31,13 +31,25 @@ data "aws_iam_policy_document" "bastion-assume-role-policy" {
 
 resource "aws_iam_role" "kafka_role" {
   name               = "kafka_role"
-  path               = "/system/"
+  path               = "/"
   assume_role_policy = "${data.aws_iam_policy_document.bastion-assume-role-policy.json}"
 }
 
 resource "aws_iam_role_policy_attachment" "S3-attach" {
-  role       = "${aws_iam_role.bastion_role.name}"
+  role       = "${aws_iam_role.kafka_role.name}"
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+}
+
+resource "aws_iam_instance_profile" "kafka_profile" {
+  name = "kafka_profile"
+  role = "${aws_iam_role.kafka_role.name}"
+}
+
+data "aws_subnet_ids" "private_subnets" {
+  vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
+  tags {
+    Name = "demo_sn_private_*"
+  }
 }
 
 resource "aws_instance" "kafka_cluster" {
@@ -45,17 +57,12 @@ resource "aws_instance" "kafka_cluster" {
   ami                         = "ami-0bdb1d6c15a40392c"
   instance_type               = "t2.micro"
   vpc_security_group_ids      = ["${aws_security_group.kafka_sg.id}"]
-  subnet_id                   = "${data.terraform_remote_state.layer-base.sn_private_a_id}"
+  subnet_id                   = "${element(data.aws_subnet_ids.private_subnets.ids, count.index)}"
   associate_public_ip_address = false
-  user_data                   = "${file("install-kafka.sh")}"
-  iam_instance_profile        = "${aws_iam_instance_profile.bastion_profile.name}"
+  iam_instance_profile        = "${aws_iam_instance_profile.kafka_profile.name}"
   key_name                    = "slavayssiere-sandbox-wescale"
 
   tags {
-    Name = "Kafka-${var.cluster_name}"
+    Name = "${format("Kafka-%02d", count.index)}"
   }
-}
-
-output "bastion_public_dns" {
-  value = "${aws_instance.bastion.public_dns}"
 }
