@@ -78,6 +78,35 @@ resource "aws_iam_role_policy_attachment" "VPC-attach" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
 }
 
+resource "aws_iam_policy" "eks_full_access" {
+    name        = "eks_full_access"
+    description = "A EKSFullAccess policy"
+    policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "eks:*"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "EKS-attach" {
+    role       = "${aws_iam_role.bastion_role.name}"
+    policy_arn = "${aws_iam_policy.eks_full_access.arn}"
+}
+
+resource "aws_iam_role_policy_attachment" "STS-assume-role-attach" {
+  role       = "${aws_iam_role.bastion_role.name}"
+  policy_arn = "arn:aws:iam::549637939820:policy/STSAssumeRoleOnly"
+}
+
 resource "aws_iam_instance_profile" "bastion_profile" {
   name = "bastion_profile"
   role = "${aws_iam_role.bastion_role.name}"

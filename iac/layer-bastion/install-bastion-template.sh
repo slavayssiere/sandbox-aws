@@ -23,6 +23,7 @@ echo "export ES_HOST=https://{{ environ('ES_HOST') }}" >> /home/ec2-user/.bashrc
 echo "kops export kubecfg {{ environ('NAME') }} >> /dev/null 2>&1" >> /home/ec2-user/.bashrc
 echo "export NAME={{ environ('NAME') }} >> /dev/null 2>&1" >> /home/ec2-user/.bashrc
 
+
 # ansible
 
 sudo amazon-linux-extras install -y ansible2
@@ -35,11 +36,21 @@ sudo mv ec2.ini /etc/ansible/
 
 sudo chmod a+x /etc/ansible/ec2.py
 
-python get-pip.py --user
-pip install boto --user
-rm get-pip.py
+python get-pip.py --user  >> /dev/null 2>&1
+pip install boto --user  >> /dev/null 2>&1
+pip install --upgrade awscli --user  >> /dev/null 2>&1
+rm get-pip.py  >> /dev/null 2>&1
 
 sudo sed -i.bak "s/destination_variable = public_dns_name/destination_variable = private_dns_name/g" /etc/ansible/ec2.ini
 sudo sed -i.bak "s/vpc_destination_variable = ip_address/vpc_destination_variable = private_ip_address/g" /etc/ansible/ec2.ini
 sudo sed -i.bak "s/#elasticache = False/elasticache = False/g" /etc/ansible/ec2.ini
 sudo sed -i.bak "s/#rds = False/rds = False/g" /etc/ansible/ec2.ini
+
+# eks 
+
+wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.10.3/2018-07-26/bin/linux/amd64/aws-iam-authenticator
+chmod +x ./aws-iam-authenticator
+sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+
+echo "export PATH=/home/ec2-user/.local/bin:$PATH" >> /home/ec2-user/.bashrc
+

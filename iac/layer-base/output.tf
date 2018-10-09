@@ -46,6 +46,18 @@ output "sn_public_c_id" {
   value = "${aws_subnet.demo_sn_public_c.id}"
 }
 
+output "sn_private_a_id" {
+  value = "${aws_subnet.demo_sn_private_a.id}"
+}
+
+output "sn_private_b_id" {
+  value = "${aws_subnet.demo_sn_private_b.id}"
+}
+
+output "sn_private_c_id" {
+  value = "${aws_subnet.demo_sn_private_c.id}"
+}
+
 output "vpc_id" {
   value = "${aws_vpc.demo_vpc.id}"
 }
