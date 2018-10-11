@@ -155,7 +155,7 @@ spec:
             - --stderrthreshold=info
             - --cloud-provider=aws
             - --skip-nodes-with-local-storage=false
-            - --nodes=3:10:nodes.test.slavayssiere.wescale
+            - --nodes=3:10:nodes.{{ environ('NAME') }}
           env:
             - name: AWS_REGION
               value: eu-west-1

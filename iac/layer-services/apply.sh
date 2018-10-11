@@ -2,11 +2,16 @@
 
 cd ../layer-bastion
 bastion_hostname=$(terraform output bastion_public_dns)
-cd ../layer-services
-
 cd ../layer-base
+private_dns_zone=$(terraform output private_dns_zone)
 export ES_HOST=$(terraform output es_host)
 cd ../layer-services
+
+if [[ -z "${NAME_CLUSTER}" ]]; then
+  export NAME=test.$private_dns_zone
+else
+  export NAME=$NAME_CLUSTER.$private_dns_zone
+fi
 
 FILE="./cm-adapter-serving-certs.yaml"
 if [ ! -e "$FILE" ]; then
@@ -22,6 +27,7 @@ fi
 
 export ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 
+jinja2 ./templates/cluster-autoscaler.yaml > ./manifests/cluster-autoscaler.yaml
 jinja2 ./templates/kube2iam.yaml > ./manifests/kube2iam.yaml
 jinja2 ./templates/fluentd-to-es.yaml > ./manifests/fluentd-to-es.yaml
 jinja2 ./templates/alert-manager-sns-forwarder.yaml > ./manifests/alert-manager-sns-forwarder.yaml
