@@ -5,6 +5,6 @@ if [[ -z "${BUCKET_TFSTATES}" ]]; then
 fi
 
 touch install-bastion.sh
-terraform apply \
+terraform destroy \
     -var "bucket_layer_base=$BUCKET_TFSTATES"
 rm install-bastion.sh
