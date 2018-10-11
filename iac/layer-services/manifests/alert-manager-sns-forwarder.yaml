@@ -36,11 +36,11 @@ spec:
             value: "arn:aws:sns:eu-west-1:549637939820:sns_topic"
         resources:
           limits:
-            memory: 1Gi
-            cpu: 0.5
-          requests:
+            memory: 0.3Gi
             cpu: 0.2
-            memory: 0.5Gi
+          requests:
+            cpu: 0.05
+            memory: 0.1Gi
         ports:
           - containerPort: 9087
             name: webhook-port

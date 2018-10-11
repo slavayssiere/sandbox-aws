@@ -40,6 +40,10 @@ resource "aws_security_group" "allow_es_connexion" {
     protocol    = "tcp"
     cidr_blocks = ["${var.vpc_cidr}"]
   }
+
+  tags {
+    Name = "sg_for_elasticsearch"
+  }
 }
 
 resource "aws_elasticsearch_domain" "es-log" {

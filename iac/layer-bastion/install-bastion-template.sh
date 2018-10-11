@@ -54,3 +54,9 @@ sudo mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
 
 echo "export PATH=/home/ec2-user/.local/bin:$PATH" >> /home/ec2-user/.bashrc
 
+# docker
+
+sudo yum install docker
+sudo usermod -aG docker ec2-user
+sudo systemctl start docker
+

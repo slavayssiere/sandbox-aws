@@ -3,7 +3,7 @@ kind: Cluster
 metadata:
   name: {{ environ('NAME') }}
 spec:
-  kubernetesVersion: 1.10.5
+  kubernetesVersion: 1.10.6
   additionalPolicies:
     node: |
       [
@@ -173,7 +173,7 @@ metadata:
   name: nodes
 spec:
   associatePublicIp: false
-  machineType: m5.large
+  machineType: m5.xlarge
   maxSize: 10
   minSize: 3
   nodeLabels:

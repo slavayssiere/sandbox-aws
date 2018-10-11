@@ -4,8 +4,9 @@ metadata:
   name: grafana-ui-ing
   namespace: monitoring
   annotations:
-    kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+  labels:
+    traffic-type: internal
 spec:
   rules:
   - http:

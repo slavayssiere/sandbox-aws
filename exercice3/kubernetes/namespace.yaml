@@ -32,8 +32,9 @@ metadata:
   name: prometheus-ui-ing
   namespace: exercice3
   annotations:
-    kubernetes.io/ingress.class: traefik
     traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+  labels:
+    traffic-type: external
 spec:
   rules:
   - http:

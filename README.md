@@ -115,9 +115,7 @@ LB_TRAEFIK=$(kubectl get svc traefik-ingress-service -n kube-system | cut -d ' '
 ```
 
 ```language-bash
-http://$(LB_TRAEFIK)/grafana
-http://$(LB_TRAEFIK)/prometheus
-http://$(LB_TRAEFIK)/_plugin/kibana
+ssh ec2-user@$bastion_hostname -L 8080:admin-tools.slavayssiere.wescale:8080 -L 8081:admin-tools.slavayssiere.wescale.com:80
 ```
 
 ## exercice 3

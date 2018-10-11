@@ -8,12 +8,22 @@ do
 done
 
 cd manifests
-kubectl apply -f v0.19.0.yaml
+kubectl apply -f namespace-monitoring.yaml
 kubectl -n monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml
+kubectl apply -f prometheus-operator-crd.yaml
+kubectl apply -f .
+kubectl apply -f v0.19.0.yaml
+cd ..
+
+cd traefik-consul
 kubectl apply -f .
 cd ..
 
-cd traefik
+cd traefik-admin
+kubectl apply -f .
+cd ..
+
+cd traefik-app
 kubectl apply -f .
 cd ..
 

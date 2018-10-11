@@ -38,7 +38,7 @@ subjects:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: external-dns
+  name: external-dns-public
   namespace: kube-system
 spec:
   strategy:
@@ -46,7 +46,36 @@ spec:
   template:
     metadata:
       labels:
-        app: external-dns
+        app: external-dns-public
+      annotations:
+        iam.amazonaws.com/role: externalDNS_role
+    spec:
+      serviceAccountName: external-dns
+      containers:
+      - name: external-dns-public
+        image: registry.opensource.zalan.do/teapot/external-dns:latest
+        args:
+        - --source=service
+        - --source=ingress
+        - --domain-filter=aws-wescale.slavayssiere.fr # will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
+        - --provider=aws
+        - --policy=upsert-only # would prevent ExternalDNS from deleting any records, omit to enable full synchronization
+        - --aws-zone-type=public # only look at public hosted zones (valid values are public, private or no value for both)
+        - --registry=txt
+        - --txt-owner-id=my-identifier
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: external-dns-private
+  namespace: kube-system
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: external-dns-private
       annotations:
         iam.amazonaws.com/role: externalDNS_role
     spec:
@@ -57,9 +86,9 @@ spec:
         args:
         - --source=service
         - --source=ingress
-        - --domain-filter=aws-wescale.slavayssiere.fr # will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
+        - --domain-filter=slavayssiere.wescale # will make ExternalDNS see only the hosted zones matching provided domain, omit to process all available hosted zones
         - --provider=aws
         - --policy=upsert-only # would prevent ExternalDNS from deleting any records, omit to enable full synchronization
-        - --aws-zone-type=public # only look at public hosted zones (valid values are public, private or no value for both)
+        - --aws-zone-type=private # only look at public hosted zones (valid values are public, private or no value for both)
         - --registry=txt
         - --txt-owner-id=my-identifier

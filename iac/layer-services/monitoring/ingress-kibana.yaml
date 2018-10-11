@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   name: kibana-ui-ing
   namespace: monitoring
-  annotations:
-    kubernetes.io/ingress.class: traefik
+  labels:
+    traffic-type: internal
 spec:
   rules:
   - http:

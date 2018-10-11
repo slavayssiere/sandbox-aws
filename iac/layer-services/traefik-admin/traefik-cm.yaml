@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: traefik-conf
+  name: traefik-admin-conf
   namespace: kube-system
 data:
   traefik.toml: |
@@ -10,8 +10,6 @@ data:
     [entryPoints]
       [entryPoints.http]
         address = ":80"
-        [entryPoints.http.redirect]
-          entryPoint = "https"
       [entryPoints.https]
         address = ":443"
           [entryPoints.https.tls]
@@ -25,4 +23,6 @@ data:
     [consul]
       endpoint = "traefik-consul:8500"
       watch = true
-      prefix = "traefik"
+      prefix = "traefik-admin"
+    [kubernetes]
+      labelselector = "traffic-type=internal"

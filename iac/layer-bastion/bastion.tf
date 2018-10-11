@@ -34,6 +34,10 @@ resource "aws_security_group" "allow_ssh" {
     protocol    = "tcp"
     cidr_blocks = ["${data.terraform_remote_state.layer-base.vpc_cidr}"]
   }
+
+  tags {
+    Name = "sg_for_bastion"
+  }
 }
 
 data "aws_iam_policy_document" "bastion-assume-role-policy" {
