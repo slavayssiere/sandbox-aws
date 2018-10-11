@@ -12,6 +12,12 @@ FILE="./cm-adapter-serving-certs.yaml"
 if [ ! -e "$FILE" ]; then
    echo "File $FILE does not exist."
    ./gencerts.sh
+   rm apiserver-key.pem
+   rm apiserver.pem
+   rm apiserver.csr
+   rm metrics-ca.crt
+   rm metrics-ca.key
+   rm metrics-ca-config.json
 fi
 
 export ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
