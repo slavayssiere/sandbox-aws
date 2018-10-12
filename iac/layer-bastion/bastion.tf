@@ -35,6 +35,14 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["${data.terraform_remote_state.layer-base.vpc_cidr}"]
   }
 
+  # allow 8080 for traefik dashboard (private vpc cidr)
+  egress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["${data.terraform_remote_state.layer-base.vpc_cidr}"]
+  }
+
   tags {
     Name = "sg_for_bastion"
   }

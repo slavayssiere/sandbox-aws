@@ -133,6 +133,7 @@ rules:
   - namespaces
   verbs:
   - list
+  - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -158,7 +159,6 @@ kind: ServiceAccount
 metadata:
   name: alertmanager-main
   namespace: monitoring
----
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
