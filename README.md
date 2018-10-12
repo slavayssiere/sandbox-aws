@@ -1,6 +1,10 @@
 # sandbox-aws
 
-To test Kubernetes on AWS:
+This project is my AWS sandbox.
+
+I'm using it to test Kubernetes on AWS.
+
+Some layers folders in "IaC" are used to create:
 
 - create VPC and networking
 - create & configure k8s
@@ -9,13 +13,13 @@ To test Kubernetes on AWS:
 - IngressController by Traefik
 - Custom Metrics
 
-et
+Another folder "namespace" are used to create some configurated namespace and get one kubeconfig file for CI/CD usage.
 
-app test: "exercice3"
+And the other one is an app test: "exercice3". It's just an webservice. See "app test" below.
 
 ## IaC
 
-### prerequisite
+### Prerequisite
 
 Connect to your aws account:
 
@@ -36,18 +40,19 @@ export AWS_SECURITY_TOKEN=${AWS_STS[2]}
 export AWS_SESSION_TOKEN=${AWS_STS[2]}
 ```
 
-install:
+To use this project you have to install these software:
 
-- install jinja2-cli
-- install jq
-- install terraform
-- install kops
-- install kubectl
+- jinja2-cli
+- jq
+- terraform
+- kops
 
-create:
+You have to create:
 
-- bucket s3 pour les tfstates terraform
-- bucket s3 pour kops
+- a S3 bucket for Terraform tfstates
+- a S3 bucket for Kops states
+
+## Launch projects
 
 ### layer-base
 
@@ -115,7 +120,7 @@ LB_TRAEFIK=$(kubectl get svc traefik-ingress-service -n kube-system | cut -d ' '
 ```
 
 ```language-bash
-ssh ec2-user@$bastion_hostname -L 8080:admin-tools.slavayssiere.wescale:8080 -L 8081:admin-tools.slavayssiere.wescale.com:80
+ssh ec2-user@$bastion_hostname -L 8080:admin-tools.slavayssiere.wescale:8080 -L 8081:admin-tools.slavayssiere.wescale:80
 ```
 
 ## exercice 3
@@ -132,4 +137,4 @@ kubectl -n monitoring delete pod --force --grace-period=0 $(kubectl -n monitorin
 
 ### alertmanager
 
-https://gist.github.com/cherti/61ec48deaaab7d288c9fcf17e700853a
+To test alertmanager you can use this [example](https://gist.github.com/cherti/61ec48deaaab7d288c9fcf17e700853a)
