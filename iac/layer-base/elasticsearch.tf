@@ -78,8 +78,6 @@ resource "aws_elasticsearch_domain" "es-log" {
 
     subnet_ids = [
       "${aws_subnet.demo_sn_private_a.id}",
-      "${aws_subnet.demo_sn_private_b.id}",
-      "${aws_subnet.demo_sn_private_c.id}",
     ]
   }
 

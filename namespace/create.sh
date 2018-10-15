@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export NAME="exercice3"
+export NAME="exercice5"
 
 mkdir tmp
 
@@ -14,6 +14,7 @@ bastion_hostname=$(terraform output bastion_public_dns)
 cd -
 
 scp -r -oStrictHostKeyChecking=no tmp ec2-user@$bastion_hostname:~
+scp -oStrictHostKeyChecking=no ~/.ssh/id_rsa.pub ec2-user@$bastion_hostname:~/tmp
 scp -oStrictHostKeyChecking=no ./kube-config-creator.sh ec2-user@$bastion_hostname:~/tmp
 
 ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "kubectl apply -f ./tmp/"
@@ -23,4 +24,10 @@ scp -oStrictHostKeyChecking=no ec2-user@$bastion_hostname:~/k8s-cicd-conf kubeco
 ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "rm -Rf ./tmp && rm k8s-cicd-conf"
 
 rm -Rf tmp
+
+echo "connect with $NAME"
+
+scp -oStrictHostKeyChecking=no ./helm-config.sh $NAME@$bastion_hostname:~/tmp
+ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "./helm-config.sh $NAME"
+ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "rm ./helm-config.sh"
 

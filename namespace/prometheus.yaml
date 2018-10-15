@@ -13,7 +13,7 @@ spec:
   serviceAccountName: prometheus
   serviceMonitorSelector:
     matchLabels:
-      app: webservice
+      app: servicemonitor
   resources:
     limits:
       cpu: 200m

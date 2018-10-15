@@ -73,6 +73,13 @@ terraform apply \
     -var "private_dns_zone=$PRIVATE_DNS_ZONE"
 ```
 
+## layer-bastion
+
+```language-bash
+cd ../layer-bastion/
+./apply.sh
+```
+
 ### layer-kubernetes
 
 go to iac/layer-kubernetes
@@ -120,7 +127,7 @@ LB_TRAEFIK=$(kubectl get svc traefik-ingress-service -n kube-system | cut -d ' '
 ```
 
 ```language-bash
-ssh ec2-user@$bastion_hostname -L 8080:admin-tools.slavayssiere.wescale:8080 -L 8081:admin-tools.slavayssiere.wescale:80
+ssh ec2-user@$bastion_hostname -L 8080:admin-tools.slavayssiere.wescale:8080 -L 8081:admin-tools.slavayssiere.wescale:80 -L 6443:api.test.slavayssiere.wescale:443
 ```
 
 ## exercice 3

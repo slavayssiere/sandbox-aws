@@ -4,6 +4,11 @@
 
 namespace=$1
 
+sudo useradd $namespace
+sudo mkdir -p /home/$namespace/.ssh/
+sudo mkdir -p /home/$namespace/.kube/
+sudo cp ~/tmp/id_rsa.pub /home/$namespace/.ssh/authorized_keys
+
 kubecfg="k8s-cicd-conf"
 
 secret_sa=$(kubectl -n $namespace get sa cicd -o json | jq -r .secrets[]."name")
@@ -45,3 +50,14 @@ kubectl config set-context \
 echo -n "Setting the current-context in the kubeconfig file..."
 kubectl config use-context "cicd-$namespace-${CLUSTER_NAME}" \
     --kubeconfig="${kubecfg}"
+
+sudo cp ${kubecfg} /home/$namespace/.kube/config
+
+ENDPOINT="${ENDPOINT//\//\\/}"
+sed -i.bak "s/${ENDPOINT}/${ENDPOINT}:6443/g" ${kubecfg}
+
+sudo chown -R $namespace:$namespace /home/$namespace/.ssh/
+sudo chmod 700 /home/$namespace/.ssh/
+sudo chmod 400 /home/$namespace/.ssh/authorized_keys
+sudo chown -R $namespace:$namespace /home/$namespace/.kube/
+

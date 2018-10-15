@@ -56,7 +56,13 @@ echo "export PATH=/home/ec2-user/.local/bin:$PATH" >> /home/ec2-user/.bashrc
 
 # docker
 
-sudo yum install docker
-sudo usermod -aG docker ec2-user
-sudo systemctl start docker
+sudo yum install -y docker  >> /dev/null 2>&1
+sudo usermod -aG docker ec2-user  >> /dev/null 2>&1
+sudo systemctl start docker  >> /dev/null 2>&1
+
+# helm configure
+aws configure set region eu-west-1
+sudo yum install -y git >> /dev/null 2>&1
+helm plugin install https://github.com/hypnoglow/helm-s3.git >> /dev/null 2>&1
+helm repo add my-charts s3://wescale-slavayssiere-helm/
 
