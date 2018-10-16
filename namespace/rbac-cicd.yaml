@@ -16,7 +16,9 @@ rules:
   - services
   - endpoints
   - pods/portforward
-  verbs: ["get", "list", "watch", "create", "patch"]
+  - namespaces
+  - configmaps
+  verbs: ["get", "list", "watch", "create", "patch", "delete"]
 - apiGroups: ["extensions"]
   resources:
   - replicasets
@@ -25,11 +27,11 @@ rules:
   resources:
   - deployments
   - ingresses
-  verbs: ["get", "list", "watch", "create", "patch"]
+  verbs: ["get", "list", "watch", "create", "patch", "delete"]
 - apiGroups: ["monitoring.coreos.com"]
   resources:
   - servicemonitors
-  verbs: ["get", "list", "watch", "create", "patch"]
+  verbs: ["get", "list", "watch", "create", "patch", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding

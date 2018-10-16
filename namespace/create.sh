@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export NAME="exercice5"
+export NAME="exercice6"
 
 mkdir tmp
 
@@ -28,6 +28,6 @@ rm -Rf tmp
 echo "connect with $NAME"
 
 scp -oStrictHostKeyChecking=no ./helm-config.sh $NAME@$bastion_hostname:~/tmp
-ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "./helm-config.sh $NAME"
-ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "rm ./helm-config.sh"
+ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "./tmp/helm-config.sh $NAME"
+ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "rm ./tmp/helm-config.sh"
 
