@@ -9,12 +9,11 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  scaleRef:
-    apiVersion: apps/v1beta2
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
     kind: Deployment
     name: {{ include "chart.fullname" . }}
     namespace: {{ .Release.Namespace }}
   minReplicas: 2
   maxReplicas: 10
-  cpuUtilization:
-    targetPercentage: 50
+  targetCPUUtilizationPercentage: 80

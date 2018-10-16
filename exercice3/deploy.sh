@@ -16,3 +16,5 @@ ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "helm repo update"
 ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "helm --tiller-namespace exercice4 install --name test --namespace exercice3 --version 0.0.1 my-charts/exercice3"
 
 KUBECONFIG=../namespace/kubeconfigs/exercice3-cicd.kubeconfig kubectl get pods
+
+helm upgrade --install test my-charts/exercice3 -f values.yaml --version 0.0.5
