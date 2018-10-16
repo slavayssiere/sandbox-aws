@@ -4,7 +4,7 @@
 until kops validate cluster
 do
     echo "Wait for cluster provisionning"
-    sleep 1
+    sleep 5
 done
 
 cd manifests

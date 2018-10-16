@@ -85,11 +85,11 @@ metadata:
   name: traefik-admin-ingress-controller-hpa
   namespace: kube-system
 spec:
-  scaleRef:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
     kind: Deployment
     name: traefik-admin-ingress-controller
     namespace: kube-system
   minReplicas: 2
   maxReplicas: 10
-  cpuUtilization:
-    targetPercentage: 50
+  targetCPUUtilizationPercentage: 80

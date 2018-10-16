@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export NAME="exercice6"
+export NAME="exercice3"
 
 mkdir tmp
 
@@ -25,9 +25,9 @@ ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "rm -Rf ./tmp && rm k8
 
 rm -Rf tmp
 
-echo "connect with $NAME"
+echo "connect with $NAME on $bastion_hostname"
 
-scp -oStrictHostKeyChecking=no ./helm-config.sh $NAME@$bastion_hostname:~/tmp
-ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "./tmp/helm-config.sh $NAME"
-ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "rm ./tmp/helm-config.sh"
+scp -oStrictHostKeyChecking=no ./helm-config.sh $NAME@$bastion_hostname:~/
+ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "./helm-config.sh $NAME"
+ssh -oStrictHostKeyChecking=no $NAME@$bastion_hostname "rm ./helm-config.sh"
 
