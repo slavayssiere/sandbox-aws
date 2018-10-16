@@ -1,12 +1,14 @@
-data "aws_security_group" "sg-master-kubernetes" {
-  name   = "masters.${var.cluster_name}"
-  vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
-}
+// Warning: dependencies between layer kubernetes and bastion
 
-data "aws_security_group" "sg-nodes-kubernetes" {
-  name   = "nodes.${var.cluster_name}"
-  vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
-}
+// data "aws_security_group" "sg-master-kubernetes" {
+//   name   = "masters.${var.cluster_name}"
+//   vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
+// }
+
+// data "aws_security_group" "sg-nodes-kubernetes" {
+//   name   = "nodes.${var.cluster_name}"
+//   vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
+// }
 
 resource "aws_security_group_rule" "allow_ssh_bastion_master" {
   type        = "ingress"
