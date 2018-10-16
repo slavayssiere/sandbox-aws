@@ -1,4 +1,3 @@
-
 resource "aws_security_group" "allow_ssh" {
   name        = "allow_ssh"
   description = "Allow SSH traffic"
@@ -91,9 +90,10 @@ resource "aws_iam_role_policy_attachment" "VPC-attach" {
 }
 
 resource "aws_iam_policy" "eks_full_access" {
-    name        = "eks_full_access"
-    description = "A EKSFullAccess policy"
-    policy = <<EOF
+  name        = "eks_full_access"
+  description = "A EKSFullAccess policy"
+
+  policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -110,8 +110,8 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "EKS-attach" {
-    role       = "${aws_iam_role.bastion_role.name}"
-    policy_arn = "${aws_iam_policy.eks_full_access.arn}"
+  role       = "${aws_iam_role.bastion_role.name}"
+  policy_arn = "${aws_iam_policy.eks_full_access.arn}"
 }
 
 resource "aws_iam_role_policy_attachment" "STS-assume-role-attach" {

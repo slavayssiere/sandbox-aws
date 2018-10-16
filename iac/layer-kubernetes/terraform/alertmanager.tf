@@ -1,4 +1,3 @@
-
 resource "aws_sns_topic" "alertmanager-sns" {
   name = "alertmanager-sns"
 }
@@ -24,4 +23,3 @@ resource "aws_sns_topic_subscription" "sns-to-sqs" {
   protocol  = "sqs"
   endpoint  = "${aws_sqs_queue.test-alert-manager.arn}"
 }
-

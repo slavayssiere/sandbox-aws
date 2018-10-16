@@ -4,17 +4,17 @@ resource "aws_security_group" "kafka_sg" {
   vpc_id      = "${data.terraform_remote_state.layer-base.vpc_id}"
 
   ingress {
-    from_port                = 22
-    to_port                  = 22
-    protocol                 = "tcp"
+    from_port       = 22
+    to_port         = 22
+    protocol        = "tcp"
     security_groups = ["${data.terraform_remote_state.layer-bastion.sg_bastion}"]
   }
 
   egress {
-    from_port = 443
-    to_port   = 443
-    protocol  = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 
@@ -47,6 +47,7 @@ resource "aws_iam_instance_profile" "kafka_profile" {
 
 data "aws_subnet_ids" "private_subnets" {
   vpc_id = "${data.terraform_remote_state.layer-base.vpc_id}"
+
   tags {
     Name = "demo_sn_private_*"
   }
