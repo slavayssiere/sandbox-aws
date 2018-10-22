@@ -33,6 +33,17 @@ spec:
                   values:
                   - traefik-ingress-lb
               topologyKey: "kubernetes.io/hostname"
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - traefik-consul
+              topologyKey: "kubernetes.io/hostname"
       serviceAccountName: traefik-ingress-controller
       terminationGracePeriodSeconds: 60
       containers:

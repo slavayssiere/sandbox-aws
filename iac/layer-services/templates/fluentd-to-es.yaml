@@ -72,7 +72,7 @@ spec:
         image: k8s.gcr.io/fluentd-elasticsearch:v2.2.0
         env:
         - name: FLUENTD_ARGS
-          value: --no-supervisor -q
+          value: --no-supervisor -v
         resources:
           limits:
             memory: 500Mi
