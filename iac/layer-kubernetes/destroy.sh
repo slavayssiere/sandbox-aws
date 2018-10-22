@@ -28,7 +28,8 @@ cd terraform
 terraform destroy \
     -var "cluster_name=$NAME" \
     -var "account_id=$ACCOUNT_ID" \
-    -var "bucket_layer_base=$BUCKET_TFSTATES"
+    -var "bucket_layer_base=$BUCKET_TFSTATES" \
+    -auto-approve
 cd ..
 
 kops delete cluster $NAME --yes

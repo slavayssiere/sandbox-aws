@@ -109,11 +109,12 @@ spec:
       - name: ca-certificates
         hostPath:
           path: /usr/share/ca-certificates/
-  # volumeClaimTemplates:
-  # - metadata:
-  #     name: traefik-consul-data
-  #   spec:
-  #     accessModes: [ "ReadWriteOnce" ]
-  #     resources:
-  #       requests:
-  #         storage: 1Gi
+  volumeClaimTemplates:
+  - metadata:
+      name: traefik-consul-data
+    spec:
+      storageClassName: rook-ceph-block
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

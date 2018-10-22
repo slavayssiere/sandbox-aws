@@ -6,5 +6,7 @@ fi
 
 touch install-bastion.sh
 terraform destroy \
-    -var "bucket_layer_base=$BUCKET_TFSTATES"
+    -var "bucket_layer_base=$BUCKET_TFSTATES" \
+    -auto-approve
+
 rm install-bastion.sh

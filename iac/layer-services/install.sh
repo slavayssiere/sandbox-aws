@@ -7,6 +7,12 @@ do
     sleep 5
 done
 
+cd rook
+kubectl apply -f operator.yaml
+kubectl apply -f cluster.yaml
+kubectl apply -f pool.yaml
+cd ..
+
 cd manifests
 kubectl apply -f namespace-monitoring.yaml
 kubectl -n monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml
