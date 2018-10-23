@@ -18,7 +18,7 @@ kubectl apply -f namespace-monitoring.yaml
 kubectl -n monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml
 kubectl apply -f prometheus-operator-crd.yaml
 kubectl apply -f .
-kubectl apply -f v0.19.0.yaml
+kubectl apply -f prometheus-operator.yaml
 cd ..
 
 cd traefik-consul
@@ -45,6 +45,13 @@ cd ..
 
 helm init --service-account tiller
 
+# helm install incubator/jaeger \
+#     --name myrel \
+#     --set provisionDataStore.cassandra=false \
+#     --set provisionDataStore.elasticsearch=false \
+#     --set storage.type=elasticsearch \
+#     --set storage.elasticsearch.host=$ES_HOST \
+#     --set storage.elasticsearch.port=443
 
 # curl -XPOST $ES_HOST/api/saved_objects/index-pattern -H "Content-Type: application/json" -H "kbn-xsrf: true" -d @kibana/default-index-pattern.json
 

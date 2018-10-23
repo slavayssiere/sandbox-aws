@@ -116,7 +116,7 @@ metadata:
   name: master-eu-west-1a
 spec:
   associatePublicIp: false
-  machineType: t2.small
+  machineType: t3.medium
   maxSize: 3
   minSize: 1
   rootVolumeSize: 64
@@ -137,7 +137,7 @@ metadata:
   name: master-eu-west-1b
 spec:
   associatePublicIp: false
-  machineType: t2.small
+  machineType: t3.medium
   maxSize: 3
   minSize: 1
   rootVolumeSize: 64
@@ -158,7 +158,7 @@ metadata:
   name: master-eu-west-1c
 spec:
   associatePublicIp: false
-  machineType: t2.small
+  machineType: t3.medium
   maxSize: 3
   minSize: 1
   rootVolumeSize: 64
@@ -182,15 +182,13 @@ spec:
   machineType: m5.xlarge
   maxSize: 10
   minSize: 3
-  rootVolumeSize: 250
+  rootVolumeSize: 64
   rootVolumeType: gp2
   cloudLabels:
     plateform: {{ environ('NAME') }}
     node-ig: simple-node
-    role: storage-node
   nodeLabels:
     kops.k8s.io/instancegroup: nodes
-    role: storage-node
   role: Node
   subnets:
   - eu-west-1a
@@ -211,7 +209,7 @@ spec:
   maxPrice: "0.10"
   maxSize: 10
   minSize: 0
-  rootVolumeSize: 128
+  rootVolumeSize: 64
   rootVolumeType: gp2
   cloudLabels:
     plateform: {{ environ('NAME') }}
@@ -226,3 +224,29 @@ spec:
   taints:
   - instance=spot:PreferNoSchedule
 
+---
+
+apiVersion: kops/v1alpha2
+kind: InstanceGroup
+metadata:
+  labels:
+    kops.k8s.io/cluster: {{ environ('NAME') }}
+  name: nodes-storage-pool
+spec:
+  associatePublicIp: false
+  machineType: i3.large
+  maxSize: 10
+  minSize: 3
+  cloudLabels:
+    plateform: {{ environ('NAME') }}
+    role: storage-node
+  nodeLabels:
+    kops.k8s.io/instancegroup: storage-nodes
+    role: storage-node
+  role: Node
+  subnets:
+  - eu-west-1a
+  - eu-west-1b
+  - eu-west-1c
+
+---
