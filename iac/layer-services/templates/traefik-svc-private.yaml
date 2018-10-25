@@ -5,7 +5,7 @@ metadata:
   namespace: kube-system
   annotations:
     service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0
-    external-dns.alpha.kubernetes.io/hostname: admin-tools.slavayssiere.wescale
+    external-dns.alpha.kubernetes.io/hostname: admin-tools.{{ environ('PRIVATE_DNS_ZONE') }}
   labels:
     k8s-app: traefik-admin-ingress-lb
 spec:

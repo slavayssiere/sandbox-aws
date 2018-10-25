@@ -43,8 +43,8 @@ spec:
       cpu: 500m
       memory: 800Mi
     min:
-      cpu: 10m
-      memory: 10Mi
+      cpu: 5m
+      memory: 5Mi
     type: Container
 ---
 # add a PodSecurityPolicy

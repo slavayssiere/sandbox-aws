@@ -51,8 +51,8 @@ resource "aws_elasticsearch_domain" "es-log" {
   elasticsearch_version = "6.3"
 
   cluster_config {
-    instance_type  = "r3.large.elasticsearch"
-    instance_count = 3
+    instance_type  = "i3.large.elasticsearch"
+    instance_count = 1
   }
 
   advanced_options {

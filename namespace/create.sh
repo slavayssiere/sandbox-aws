@@ -1,22 +1,21 @@
 #!/bin/bash
 
-export NAME="exercice3"
+export NAME="exercice4"
 
 mkdir tmp
 
 jinja2 namespace.yaml > ./tmp/namespace.yaml
 jinja2 prometheus.yaml > ./tmp/prometheus.yaml
 jinja2 rbac-cicd.yaml > ./tmp/rbac-cicd.yaml
+jinja2 grafana.yaml > ./tmp/grafana.yaml
 
-
-cd ../iac/layer-bastion
-bastion_hostname=$(terraform output bastion_public_dns)
-cd -
+bastion_hostname="bastion.aws-wescale.slavayssiere.fr"
 
 scp -r -oStrictHostKeyChecking=no tmp ec2-user@$bastion_hostname:~
 scp -oStrictHostKeyChecking=no ~/.ssh/id_rsa.pub ec2-user@$bastion_hostname:~/tmp
 scp -oStrictHostKeyChecking=no ./kube-config-creator.sh ec2-user@$bastion_hostname:~/tmp
 
+ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "kubectl apply -f ./tmp/namespace.yaml"
 ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "kubectl apply -f ./tmp/"
 ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "./tmp/kube-config-creator.sh $NAME"
 
