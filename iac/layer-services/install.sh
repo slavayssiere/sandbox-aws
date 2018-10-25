@@ -19,8 +19,12 @@ kubectl apply -f prometheus-operator.yaml
 kubectl apply -f .
 cd ..
 
+cd kube-prometheus
+kubectl -n monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml
+kubectl apply -f .
+cd ..
+
 cd manifests
-# kubectl -n monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml
 kubectl apply -f .
 cd ..
 

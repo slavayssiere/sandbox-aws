@@ -6,3 +6,4 @@ apiserver.pem
 metrics-ca-config.json
 metrics-ca.key
 metrics-ca.crt
+manifests/cluster-autoscaler.yaml

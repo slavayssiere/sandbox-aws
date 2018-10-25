@@ -38,3 +38,5 @@ ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "./install.sh"
 
 rm ./manifests/kube2iam.yaml
 rm ./manifests/fluentd-to-es.yaml
+rm ./manifests/cluster-autoscaler.yaml
+rm ./manifests/alert-manager-sns-forwarder.yaml

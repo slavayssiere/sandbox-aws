@@ -66,3 +66,6 @@ sudo yum install -y git >> /dev/null 2>&1
 helm plugin install https://github.com/hypnoglow/helm-s3.git >> /dev/null 2>&1
 helm repo add my-charts s3://wescale-slavayssiere-helm/
 
+sudo chmod a+w /etc/environment  >> /dev/null 2>&1
+echo "LANG=en_US.utf-8" >> /etc/environment
+echo "LC_ALL=en_US.utf-8" >> /etc/environment

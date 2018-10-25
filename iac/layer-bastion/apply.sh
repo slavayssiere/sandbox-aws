@@ -20,6 +20,10 @@ else
   export NAME=$NAME_CLUSTER.$private_dns_zone
 fi
 
+if [[ -z "${PUBLIC_DNS_ZONE}" ]]; then
+  export PUBLIC_DNS_ZONE="aws-wescale.slavayssiere.fr."
+fi
+
 export CLOUD=aws
 export ACCOUNT_ID=$(aws sts get-caller-identity | jq .Account | tr -d \")
 
@@ -27,4 +31,5 @@ jinja2 install-bastion-template.sh > install-bastion.sh
 
 terraform apply \
     -var "bucket_layer_base=$BUCKET_TFSTATES" \
+    -var "public_dns=$PUBLIC_DNS_ZONE" \
     -auto-approve

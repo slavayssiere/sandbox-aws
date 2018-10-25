@@ -51,6 +51,7 @@ You have to create:
 
 - a S3 bucket for Terraform tfstates
 - a S3 bucket for Kops states
+- a S3 bucket for your private Helm chart
 
 ## Launch projects
 
@@ -120,11 +121,6 @@ test if custom metrics works:
 kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1" | jq .
 ```
 
-get LB value:
-
-```language-bash
-LB_TRAEFIK=$(kubectl get svc traefik-ingress-service -n kube-system | cut -d ' ' -f 10)
-```
 
 ```language-bash
 ssh ec2-user@bastion.aws-wescale.slavayssiere.fr -L 8080:admin-tools.slavayssiere.wescale:8080 -L 8081:admin-tools.slavayssiere.wescale:80 -L 6443:api.test.slavayssiere.wescale:443
