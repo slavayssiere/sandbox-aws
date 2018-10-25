@@ -10,6 +10,6 @@ cd -
 
 cd layer-base
 terraform destroy \
-    -auto-approve
+ -auto-approve
 cd -
 
