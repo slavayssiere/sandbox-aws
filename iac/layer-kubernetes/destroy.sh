@@ -34,10 +34,10 @@ cd ..
 
 kops delete cluster $NAME --yes
 
-hosted_zone_id=$(aws route53 list-hosted-zones --profile my-wescale-account | jq -r '.HostedZones[] | select(.Name | contains("slavayssiere.wescale.")).Id' | cut -d '/' -f3)
+hosted_zone_id=$(aws route53 list-hosted-zones | jq -r '.HostedZones[] | select(.Name | contains("slavayssiere.wescale.")).Id' | cut -d '/' -f3)
 
 aws route53 list-resource-record-sets \
-  --hosted-zone-id $hosted_zone_id --profile my-wescale-account |
+  --hosted-zone-id $hosted_zone_id |
 jq -c '.ResourceRecordSets[]' |
 while read -r resourcerecordset; do
   read -r name type <<<$(echo $(jq -r '.Name,.Type' <<<"$resourcerecordset"))
@@ -47,6 +47,6 @@ while read -r resourcerecordset; do
       --change-batch '{"Changes":[{"Action":"DELETE","ResourceRecordSet":
           '"$resourcerecordset"'
         }]}' \
-      --output text --query 'ChangeInfo.Id' --profile my-wescale-account
+      --output text --query 'ChangeInfo.Id'
   fi
 done

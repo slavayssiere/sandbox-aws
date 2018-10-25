@@ -23,3 +23,7 @@ data "terraform_remote_state" "layer-base" {
 variable "bucket_layer_base" {
   default = "wescale-slavayssiere-terraform"
 }
+
+variable "public_dns" {
+  default = "aws-wescale.slavayssiere.fr."
+}

@@ -25,6 +25,18 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app: servicemonitor
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 1
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: k8s-app
+                  operator: In
+                  values:
+                  - traefik-ingress-lb
+              topologyKey: "failure-domain.beta.kubernetes.io/zone"
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

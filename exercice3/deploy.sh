@@ -17,4 +17,5 @@ ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "helm --tiller-namespa
 
 KUBECONFIG=../namespace/kubeconfigs/exercice3-cicd.kubeconfig kubectl get pods
 
-helm upgrade --install test my-charts/exercice3 -f values.yaml --version 0.0.5
+helm install --name test --namespace exercice3 --version 0.0.1 my-charts/exercice3
+helm install --name test my-charts/exercice3 -f values.yaml --version 0.0.5

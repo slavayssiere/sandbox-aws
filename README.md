@@ -127,7 +127,7 @@ LB_TRAEFIK=$(kubectl get svc traefik-ingress-service -n kube-system | cut -d ' '
 ```
 
 ```language-bash
-ssh ec2-user@$bastion_hostname -L 8080:admin-tools.slavayssiere.wescale:8080 -L 8081:admin-tools.slavayssiere.wescale:80 -L 6443:api.test.slavayssiere.wescale:443
+ssh ec2-user@bastion.aws-wescale.slavayssiere.fr -L 8080:admin-tools.slavayssiere.wescale:8080 -L 8081:admin-tools.slavayssiere.wescale:80 -L 6443:api.test.slavayssiere.wescale:443
 ```
 
 ## exercice 3
@@ -145,3 +145,12 @@ kubectl -n monitoring delete pod --force --grace-period=0 $(kubectl -n monitorin
 ### alertmanager
 
 To test alertmanager you can use this [example](https://gist.github.com/cherti/61ec48deaaab7d288c9fcf17e700853a)
+
+
+# TODO
+
+- [backbox](https://medium.com/the-telegraph-engineering/how-prometheus-and-the-blackbox-exporter-makes-monitoring-microservice-endpoints-easy-and-free-of-a986078912ee)
+- opentracing 
+    - Jaeger
+    - activer dans Traefik
+    - ajouter dans exercice3

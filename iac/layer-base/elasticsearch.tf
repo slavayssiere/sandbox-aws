@@ -52,7 +52,7 @@ resource "aws_elasticsearch_domain" "es-log" {
 
   cluster_config {
     instance_type  = "r3.large.elasticsearch"
-    instance_count = 1
+    instance_count = 3
   }
 
   advanced_options {

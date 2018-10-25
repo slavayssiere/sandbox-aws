@@ -48,7 +48,7 @@ roleRef:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: fluentd-es-v2.3.1
+  name: fluentd-es
   namespace: monitoring
   labels:
     k8s-app: fluentd-es
@@ -97,7 +97,7 @@ spec:
           path: /var/lib/docker/containers
       - name: config-volume
         configMap:
-          name: fluentd-es-config-v0.1.5
+          name: fluentd-es-config
 ---
 kind: Service
 apiVersion: v1
@@ -113,7 +113,7 @@ spec:
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: fluentd-es-config-v0.1.5
+  name: fluentd-es-config
   namespace: monitoring
   labels:
     addonmanager.kubernetes.io/mode: Reconcile
@@ -538,18 +538,27 @@ data:
       @log_level info
       type_name _doc
       include_tag_key true
+      logstash_prefix applogs
+      logstash_format true
+
       host elasticsearch-logging
       port 443
       scheme https
       ssl_verify false
-      logstash_prefix applogs
-      logstash_format true
+      ssl_version TLSv1_2
+
+      reload_connections false
+      resurrect_after 5
+
       <buffer>
-        flush_thread_count 8
-        flush_interval 2s
-        chunk_limit_size 8M
-        queue_limit_length 128
-        retry_max_interval 30
-        retry_forever true
+        @type memory
+        flush_thread_count 1
+        flush_interval 10s
+        retry_forever
+        retry_wait 1s
+        retry_max_interval 60s
+        chunk_limit_size 8m
+        queue_limit_length 8192
       </buffer>
+
     </match>

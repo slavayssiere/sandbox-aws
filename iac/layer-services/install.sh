@@ -13,12 +13,15 @@ kubectl apply -f cluster.yaml
 kubectl apply -f pool.yaml
 cd ..
 
-cd manifests
+cd prometheus-operator
 kubectl apply -f namespace-monitoring.yaml
-kubectl -n monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml
-kubectl apply -f prometheus-operator-crd.yaml
-kubectl apply -f .
 kubectl apply -f prometheus-operator.yaml
+kubectl apply -f .
+cd ..
+
+cd manifests
+# kubectl -n monitoring create secret generic alertmanager-main --from-file=alertmanager.yaml
+kubectl apply -f .
 cd ..
 
 cd traefik-consul
