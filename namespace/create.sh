@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export NAME="exercice4"
+export NAME="exercice3"
 
 mkdir tmp
 

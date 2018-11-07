@@ -67,6 +67,16 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: status.podIP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8181
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+            timeoutSeconds: 1
           ports:
             - containerPort: 8181
               hostPort: 8181

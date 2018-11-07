@@ -56,6 +56,8 @@ spec:
   networking:
     calico: 
       crossSubnet: true
+      prometheusMetricsEnabled: true 
+      prometheusMetricsPort: 9091 # https://github.com/kubernetes/kops/blob/master/pkg/apis/kops/v1alpha2/networking.go
   kubeAPIServer:
     runtimeConfig:
       admissionregistration.k8s.io/v1alpha1: "true"
@@ -116,7 +118,7 @@ metadata:
   name: master-eu-west-1a
 spec:
   associatePublicIp: false
-  machineType: t2.medium
+  machineType: m3.medium
   maxSize: 3
   minSize: 1
   rootVolumeSize: 64
@@ -137,7 +139,7 @@ metadata:
   name: master-eu-west-1b
 spec:
   associatePublicIp: false
-  machineType: t2.medium
+  machineType: m3.medium
   maxSize: 3
   minSize: 1
   rootVolumeSize: 64
@@ -158,7 +160,7 @@ metadata:
   name: master-eu-west-1c
 spec:
   associatePublicIp: false
-  machineType: t2.medium
+  machineType: m3.medium
   maxSize: 3
   minSize: 1
   rootVolumeSize: 64

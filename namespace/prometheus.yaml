@@ -23,6 +23,13 @@ spec:
       memory: 400Mi
   externalUrl: /prometheus-{{ environ('NAME') }}
   routePrefix: /
+  storage:
+    volumeClaimTemplate:
+      spec:
+        storageClassName: rook-ceph-block
+        resources:
+          requests:
+            storage: 5Gi
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress

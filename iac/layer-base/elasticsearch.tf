@@ -85,3 +85,13 @@ resource "aws_elasticsearch_domain" "es-log" {
     Utility = "logs"
   }
 }
+
+resource "aws_route53_record" "es-dns" {
+  zone_id = "${aws_route53_zone.demo_private_zone.zone_id}"
+  name    = "es.${var.private_dns_zone}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = ["${aws_elasticsearch_domain.es-log.endpoint}"]
+}
+
+

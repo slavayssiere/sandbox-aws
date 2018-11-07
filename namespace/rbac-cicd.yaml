@@ -17,8 +17,10 @@ rules:
   - endpoints
   - pods/portforward
   - pods/log
+  - pods/exec
   - namespaces
   - configmaps
+  - persistentvolumeclaims
   verbs: ["get", "list", "watch", "create", "patch", "update", "delete"]
 - apiGroups: ["extensions"]
   resources:
@@ -28,6 +30,7 @@ rules:
   resources:
   - deployments
   - ingresses
+  - statefulsets
   verbs: ["get", "list", "watch", "create", "patch", "delete"]
 - apiGroups: ["monitoring.coreos.com"]
   resources:

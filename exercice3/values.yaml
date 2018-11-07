@@ -1,0 +1,64 @@
+# Default values for yugabyte.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+Component: "yugabytedb"
+Image:
+  repository: "yugabytedb/yugabyte"
+  tag: latest
+  pullPolicy: IfNotPresent
+
+persistentVolume:
+  count: 2
+  storage: 10Gi
+  storageClass: rook-ceph-block
+
+resource:
+  master:
+    requests:
+      cpu: 2
+      memory: 2Gi
+  tserver:
+    requests:
+      cpu: 2
+      memory: 4Gi
+
+replicas:
+  master: 3
+  tserver: 3
+
+partition:
+  master: 3
+  tserver: 3
+
+PodManagementPolicy: Parallel
+
+serviceEndpoints:
+  - name: "yb-master-ui"
+    type: ClusterIP
+    app: "yb-master"
+    ports:
+      ui: "7000"
+
+Services:
+  - name: "yb-masters"
+    label: "yb-master"
+    memory_limit_to_ram_ratio: 0.85
+    ports:
+      ui: "7000"
+      rpc-port: "7100"
+
+  - name: "yb-tservers"
+    label: "yb-tserver"
+    ports:
+      ui: "9000"
+      rpc-port: "7100"
+      yql-port: "9042"
+      yedis-port: "6379"
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -12,6 +12,8 @@ route:
 receivers:
 - name: slack_general
   slack_configs:
-  - api_url: $WEBHOOK_URL
-    channel: '#demo'
+  - api_url: https://hooks.slack.com/services/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
+    channel: '#wespeakcloud'
+    title: "{{ environ('NAME') }}"
+    text: "{{ .Annotations.message }}"
 

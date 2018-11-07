@@ -69,3 +69,15 @@ helm repo add my-charts s3://wescale-slavayssiere-helm/
 sudo chmod a+w /etc/environment  >> /dev/null 2>&1
 echo "LANG=en_US.utf-8" >> /etc/environment
 echo "LC_ALL=en_US.utf-8" >> /etc/environment
+
+curl -sLo svcat https://download.svcat.sh/cli/latest/linux/amd64/svcat  >> /dev/null 2>&1
+chmod +x svcat  >> /dev/null 2>&1
+sudo mv svcat /usr/local/bin  >> /dev/null 2>&1
+svcat install plugin  >> /dev/null 2>&1
+
+curl -O -L  https://github.com/projectcalico/calicoctl/releases/download/v3.3.0/calicoctl  >> /dev/null 2>&1
+chmod +x calicoctl >> /dev/null 2>&1
+sudo mv calicoctl /usr/local/bin/calicoctl >> /dev/null 2>&1
+
+echo "export DATASTORE_TYPE=kubernetes" >> /home/ec2-user/.bashrc
+echo "export KUBECONFIG=~/.kube/config" >> /home/ec2-user/.bashrc

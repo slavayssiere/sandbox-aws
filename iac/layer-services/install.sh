@@ -4,8 +4,10 @@
 until kops validate cluster
 do
     echo "Wait for cluster provisionning"
-    sleep 5
+    sleep 10
 done
+
+kubectl annotate ns kube-system iam.amazonaws.com/permitted=".*"
 
 cd rook
 kubectl apply -f operator.yaml
@@ -50,7 +52,34 @@ cd custom-metric
 kubectl apply -f .
 cd ..
 
+# cd kiam
+# kubectl create secret generic kiam-server-tls -n kube-system \
+#   --from-file=ca.pem \
+#   --from-file=server.pem \
+#   --from-file=server-key.pem
+
+# kubectl create secret generic kiam-agent-tls -n kube-system \
+#   --from-file=ca.pem \
+#   --from-file=agent.pem \
+#   --from-file=agent-key.pem
+
+# kubectl apply -f .
+# cd ..
+
 helm init --service-account tiller
+
+helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
+helm repo add aws-sb https://awsservicebroker.s3.amazonaws.com/charts
+
+helm install svc-cat/catalog \
+    --name catalog \
+    --namespace catalog
+
+helm install aws-sb/aws-servicebroker \
+    --name aws-servicebroker \
+    --namespace aws-sb \
+    --version 1.0.0-beta.2 \
+    -f ./service-broker/values.yaml
 
 # helm install incubator/jaeger \
 #     --name myrel \

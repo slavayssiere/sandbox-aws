@@ -1,0 +1,22 @@
+{
+    "hosts": [
+        "kiam-server",
+        "kiam-server:443",
+        "127.0.0.1",
+        "127.0.0.1:443",
+        "127.0.0.1:9610"
+    ],
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C":  "UK",
+            "L":  "London",
+            "O":  "uSwitch",
+            "OU": "WWW",
+            "ST": "London"
+        }
+    ]
+}
