@@ -122,7 +122,9 @@ kubectl get --raw "/apis/custom.metrics.k8s.io/v1beta1" | jq .
 ```
 
 ```language-bash
-ssh ec2-user@bastion.aws-wescale.slavayssiere.fr \
+eval $(ssh-agent -s)
+ssh-add ~/.ssh/id_rsa
+ssh -A ec2-user@bastion.aws-wescale.slavayssiere.fr \
     -L 8080:admin-tools.slavayssiere.wescale:8080 \
     -L 8081:admin-tools.slavayssiere.wescale:80 \
     -L 6443:api.test.slavayssiere.wescale:443

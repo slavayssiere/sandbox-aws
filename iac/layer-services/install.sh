@@ -68,18 +68,18 @@ cd ..
 
 helm init --service-account tiller
 
-helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
-helm repo add aws-sb https://awsservicebroker.s3.amazonaws.com/charts
+# helm repo add svc-cat https://svc-catalog-charts.storage.googleapis.com
+# helm repo add aws-sb https://awsservicebroker.s3.amazonaws.com/charts
 
-helm install svc-cat/catalog \
-    --name catalog \
-    --namespace catalog
+# helm install svc-cat/catalog \
+#     --name catalog \
+#     --namespace catalog
 
-helm install aws-sb/aws-servicebroker \
-    --name aws-servicebroker \
-    --namespace aws-sb \
-    --version 1.0.0-beta.2 \
-    -f ./service-broker/values.yaml
+# helm install aws-sb/aws-servicebroker \
+#     --name aws-servicebroker \
+#     --namespace aws-sb \
+#     --version 1.0.0-beta.2 \
+#     -f ./service-broker/values.yaml
 
 # helm install incubator/jaeger \
 #     --name myrel \

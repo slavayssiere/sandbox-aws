@@ -54,7 +54,9 @@ jinja2 ./templates/route53-externalDNS.yaml > ./manifests/route53-externalDNS.ya
 jinja2 ./templates/traefik-svc-private.yaml > ./traefik-admin/traefik-svc.yaml
 jinja2 ./templates/traefik-svc-public.yaml > ./traefik-app/traefik-svc.yaml
 jinja2 ./aws-service-catalog/aws-service-operator.yaml > ./manifests/aws-service-operator.yaml
-jinja2 ./templates/alertmanager.yaml > ./kube-prometheus/alertmanager.yaml
+
+cp ./templates/alertmanager.yaml ./kube-prometheus/alertmanager.yaml
+sed -i.bak "s/%NAME%/$NAME/g" ./kube-prometheus/alertmanager.yaml
 
 scp -r -oStrictHostKeyChecking=no . ec2-user@$bastion_hostname:~
 ssh -oStrictHostKeyChecking=no ec2-user@$bastion_hostname "./install.sh"

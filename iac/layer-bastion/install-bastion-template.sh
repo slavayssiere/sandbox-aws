@@ -81,3 +81,39 @@ sudo mv calicoctl /usr/local/bin/calicoctl >> /dev/null 2>&1
 
 echo "export DATASTORE_TYPE=kubernetes" >> /home/ec2-user/.bashrc
 echo "export KUBECONFIG=~/.kube/config" >> /home/ec2-user/.bashrc
+
+## test
+curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python get-pip.py --user  >> /var/log/pip-install.log
+pip install boto --user  >> /var/log/pip-install.log
+pip install --upgrade awscli --user  >> /var/log/pip-install.log
+rm get-pip.py  >> /dev/null 2>&1
+
+wget https://files.pythonhosted.org/packages/source/m/mitogen/mitogen-0.2.3.tar.gz
+tar -xvf mitogen-0.2.3.tar.gz  >> /dev/null 2>&1
+sudo mv mitogen-0.2.3 /etc/ansible/
+
+sudo rm /etc/ansible/ansible.cfg
+
+sudo touch /etc/ansible/ansible.cfg
+sudo chown ec2-user:ec2-user /etc/ansible/ansible.cfg
+
+echo "[defaults]" >> /etc/ansible/ansible.cfg
+echo "strategy_plugins = /etc/ansible/mitogen-0.2.3/ansible_mitogen/plugins/strategy" >> /etc/ansible/ansible.cfg
+echo "strategy = mitogen_linear" >> /etc/ansible/ansible.cfg
+echo "host_key_checking = False" >> /etc/ansible/ansible.cfg
+echo "[inventory]" >> /etc/ansible/ansible.cfg
+echo "[privilege_escalation]" >> /etc/ansible/ansible.cfg
+echo "[paramiko_connection]" >> /etc/ansible/ansible.cfg
+echo "[ssh_connection]" >> /etc/ansible/ansible.cfg
+echo "[diff]" >> /etc/ansible/ansible.cfg
+
+sudo chmod a+w /etc/ssh/ssh_config
+
+echo "Host *.slavayssiere.wescale" >> /etc/ssh/ssh_config
+echo "  StrictHostKeyChecking no" >> /etc/ssh/ssh_config
+
+sudo systemctl restart sshd
+
+sudo chmod a-w /etc/ssh/ssh_config
+
