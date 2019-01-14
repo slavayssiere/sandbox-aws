@@ -3,3 +3,4 @@ clef.pem
 kube.config
 test-*
 iac/layer-kubespray/terraform/.terraform
+.DS_Store
