@@ -132,7 +132,7 @@ spec:
         kubernetes.io/role: master
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: k8s.gcr.io/cluster-autoscaler:v1.2.2
+        - image: k8s.gcr.io/cluster-autoscaler:v1.12.2
           name: cluster-autoscaler
           livenessProbe:
             httpGet:

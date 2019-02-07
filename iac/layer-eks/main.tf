@@ -22,7 +22,7 @@ data "terraform_remote_state" "layer-base" {
 
 data "terraform_remote_state" "layer-bastion" {
   backend = "s3"
-
+  
   config {
     bucket = "${var.bucket_layer_base}"
     region = "eu-west-1"
