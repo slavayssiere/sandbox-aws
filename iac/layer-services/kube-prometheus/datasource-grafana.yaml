@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    app: prometheus-operator-grafana
+    chart: prometheus-operator-4.3.3
+    grafana_datasource: "1"
+    heritage: Tiller
+    release: prom-operator
+  name: prom-operator-prometheus-o-grafana-datasource
+  namespace: monitoring
+data:
+  datasource.yaml: |-
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-operated:9090/
+      access: proxy
+      isDefault: true

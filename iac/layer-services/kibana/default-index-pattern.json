@@ -1,7 +1,0 @@
-{
-    "attributes": {
-        "title": "applogs-*",
-        "timeFieldName": "@timestamp",
-        "notExpandable": true
-    }
-}

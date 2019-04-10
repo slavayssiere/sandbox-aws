@@ -25,6 +25,6 @@ data:
     [consul]
       endpoint = "traefik-consul:8500"
       watch = true
-      prefix = "traefik"
+      prefix = "traefik-app"
     [kubernetes]
       labelselector = "traffic-type=external"

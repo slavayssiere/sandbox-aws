@@ -45,7 +45,7 @@ spec:
       containers:
       - name: traefik-consul
         imagePullPolicy: Always
-        image: consul:1.2.2
+        image: consul:1.4.2
         args:
         - "agent"
         - "-server"

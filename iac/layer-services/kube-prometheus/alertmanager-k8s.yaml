@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: alertmanager-k8s
+  name: alertmanager-k8s
+  namespace: monitoring
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  labels:
+    app: alertmanager-k8s
+  name: alertmanager-k8s
+  namespace: monitoring
+spec:
+  version: v0.16.1
+  baseImage: quay.io/prometheus/alertmanager
+  externalUrl: /alertmanager
+  listenLocal: false
+  logLevel: info
+  paused: false
+  replicas: 2
+  retention: 120h
+  routePrefix: /
+  securityContext:
+    fsGroup: 2000
+    runAsNonRoot: true
+    runAsUser: 1000
+  serviceAccountName: alertmanager-k8s
+  storage:
+    volumeClaimTemplate:
+      spec:
+        accessModes:
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: 10Gi
+        storageClassName: rook-ceph-block
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: alertmanager-k8s-ing
+  namespace: monitoring
+  annotations:
+    traefik.ingress.kubernetes.io/rule-type: PathPrefixStrip
+  labels:
+    traffic-type: internal
+spec:
+  rules:
+  - host: localhost
+    http:
+      paths:
+      - path: /alertmanager
+        backend:
+          serviceName: alertmanager-operated
+          servicePort: 9093

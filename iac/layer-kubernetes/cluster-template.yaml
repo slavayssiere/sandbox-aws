@@ -28,6 +28,8 @@ spec:
       type: Internal
   authorization:
     rbac: {}
+  kubelet:
+    anonymousAuth: false
   channel: stable
   cloudProvider: aws
   configBase: {{ environ('KOPS_STATE_STORE') }}/{{ environ('NAME') }}
